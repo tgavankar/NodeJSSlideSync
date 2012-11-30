@@ -1,4 +1,9 @@
 module.exports = function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
-    res.redirect('/login');
+    if(req.route.method === "get") {
+    	res.redirect('/login');
+	}
+	else {
+		res.status(403).send("Unauthorized");
+	}
 };

@@ -13,6 +13,7 @@ function init(){
 
     mongoose.connect('mongodb://localhost/SlideSync');
 
+    require('express-helpers')(app);
     require('./socketSrv')(app);
     require('./rootRoutes')(app);
     require('./presRoutes')(app);

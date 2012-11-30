@@ -9,8 +9,6 @@
         $(document).ready(function(){
             $('#create').submit(function(e) {
                 e.preventDefault();
-                var username = $('#regUsername').val();
-                var password = $('#regPassword').val();
 
                 function success(data){
                     alert(JSON.stringify(data));
@@ -20,19 +18,18 @@
                     alert(JSON.stringify(err));
                 }
 
-                if(password === $("#regPasswordConf").val()) {
-                    $.ajax({
-                        url: '/register',
-                        data: {username: username, password: password},
-                        cache: false,
-                        type: 'POST',
-                        success: success,
-                        error: error
-                    });
-                }
-                else {
-                    alert("Passwords don't match.");
-                }
+                $.ajax({
+                    url: '/create',
+                    data: {title: $('#title').val(),
+                           desc: $('#desc').val(),
+                           html: $('#html').val(),
+                           css: $('#css').val(),
+                           type: 'dzslides'},
+                    cache: false,
+                    type: 'POST',
+                    success: success,
+                    error: error
+                });
             });
         });
     </script>
@@ -50,8 +47,12 @@
                 <input id="desc" />
             </div>
             <div>
-                <label> HTML / CSS ONLY (dzSlides) </label>
-                <textarea id="htmlcss"> </textarea>
+                <label> HTML (dzSlides) </label>
+                <textarea id="html"> </textarea>
+            </div>
+            <div>
+                <label> CSS (dzSlides) </label>
+                <textarea id="css"> </textarea>
             </div>
             <div>
                 <button id="createButton"> Create </button>

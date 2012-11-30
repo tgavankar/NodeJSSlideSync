@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <ul>
+    <% for(pres in preslist) { %>
+      <li><%- link_to(preslist[pres].title, "view/" + preslist[pres].shortid) %></li>
+    <% } %>
+    </ul>
+  </body>
+</html>
