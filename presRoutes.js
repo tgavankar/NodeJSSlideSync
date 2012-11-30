@@ -15,13 +15,23 @@ module.exports = function (app) {
                 res.send("id not found");
             }
             else {
-                res.render('view.ejs', {title: doc.title, html: doc.content.html, css: doc.content.css});
+                res.render('view.ejs', {title: doc.title, html: doc.content.html, css: doc.content.css, jsfile: 'viewer.js'});
             }
         });
     });
 
     app.get('/present/:id', ensureAuthenticated, function(req, res) {
-        res.send("pres " + req.params.id);
+        Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
+            if(err) {
+                res.send("error");
+            }
+            else if(!doc) {
+                res.send("Not found");
+            }
+            else {
+                res.render('view.ejs', {title: doc.title, html: doc.content.html, css: doc.content.css, jsfile: 'presenter.js'});
+            }
+        });
     });
 
     app.get('/list', ensureAuthenticated, function(req, res) {

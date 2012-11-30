@@ -14,14 +14,15 @@ function init(){
     mongoose.connect('mongodb://localhost/SlideSync');
 
     require('express-helpers')(app);
-    require('./socketSrv')(app);
     require('./rootRoutes')(app);
     require('./presRoutes')(app);
     require('./loginRoutes')(app);
 
-    http.createServer(app).listen(8888, function() {
+    var httpSrv = http.createServer(app).listen(8888, function() {
         console.log("Express server listening on port %d", 8888);
     });
+
+    require('./socketSrv')(httpSrv);
 }
 
 init();

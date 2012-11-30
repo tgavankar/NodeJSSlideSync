@@ -3,7 +3,7 @@ module.exports = function (app) {
         // Initialize the socket.io library
         // Start the socket.io server on port 3000
         // Remember.. this also serves the socket.io.js file!
-        var io = require('socket.io').listen(3000);
+        var io = require('socket.io').listen(app);
 
         // Listen for client connection event
         // io.sockets.* is the global, *all clients* socket
