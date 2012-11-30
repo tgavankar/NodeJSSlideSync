@@ -1,0 +1,55 @@
+<html>
+<head>
+    <title> SlideSync </title>
+    <meta name='viewport' content='initial-scale=1.0 maximum-scale=1.0 minimum-scale=1.0 user-scalable=0' />
+
+    <script src="/lib/jquery-1.8.2.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#login').submit(function(e) {
+                e.preventDefault();
+                var username = $('#loginUsername').val();
+                var password = $('#loginPassword').val();
+
+                function success(data){
+                    window.location.replace("/");
+                }
+
+                function error(xhr, status, err){
+                    console.log(xhr);
+                    alert(JSON.stringify(err));
+                }
+
+                $.ajax({
+                    url: '/login',
+                    data: {username: username, password: password},
+                    cache: false,
+                    type: 'POST',
+                    success: success,
+                    error: error
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+
+    <h2>Login</h2>
+    <form id="login">
+        <div>
+            <div>
+                <label> Username </label>
+                <input id="loginUsername" type="username"/>
+            </div>
+            <div>
+                <label> Password </label>
+                <input id="loginPassword" type="password"/>
+            </div>
+            <div>
+                <button id="loginButton"> Login </button>
+            </div>
+        </div>
+    </form>
+</body>
+</html>

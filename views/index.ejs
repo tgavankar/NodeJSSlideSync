@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title %></p>
+    <% if(!user) { %>
+    <a href="login">Login</a>
+    <a href="register">Register</a>
+    <% } else { %>
+    <span>Welcome, <%= user.username %></span>
+    <a href="logout">Logout</a>
+    <% } %>
+    <a href="mypres">My Presentations</a>
+    <a href="create">Create</a>
+  </body>
+</html>

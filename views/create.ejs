@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title> SlideSync </title>
+    <meta name='viewport' content='initial-scale=1.0 maximum-scale=1.0 minimum-scale=1.0 user-scalable=0' />
+
+    <script src="/lib/jquery-1.8.2.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $('#create').submit(function(e) {
+                e.preventDefault();
+                var username = $('#regUsername').val();
+                var password = $('#regPassword').val();
+
+                function success(data){
+                    alert(JSON.stringify(data));
+                }
+
+                function error(xhr, status, err){
+                    alert(JSON.stringify(err));
+                }
+
+                if(password === $("#regPasswordConf").val()) {
+                    $.ajax({
+                        url: '/register',
+                        data: {username: username, password: password},
+                        cache: false,
+                        type: 'POST',
+                        success: success,
+                        error: error
+                    });
+                }
+                else {
+                    alert("Passwords don't match.");
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>Create</h2>
+    <div>
+        <form id="create">
+            <div>
+                <label> Title </label>
+                <input id="title" />
+            </div>
+            <div>
+                <label> Description </label>
+                <input id="desc" />
+            </div>
+            <div>
+                <label> HTML / CSS ONLY (dzSlides) </label>
+                <textarea id="htmlcss"> </textarea>
+            </div>
+            <div>
+                <button id="createButton"> Create </button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
