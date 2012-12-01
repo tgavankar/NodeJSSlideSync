@@ -17,6 +17,7 @@ function init(){
     require('./rootRoutes')(app);
     require('./presRoutes')(app);
     require('./loginRoutes')(app);
+    require('./redisRoutes')(app);
 
     var httpSrv = http.createServer(app).listen(8888, function() {
         console.log("Express server listening on port %d", 8888);

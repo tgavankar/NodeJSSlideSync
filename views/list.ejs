@@ -7,7 +7,7 @@
   <body>
     <ul>
     <% for(pres in preslist) { %>
-      <li><%- link_to(preslist[pres].title, "view/" + preslist[pres].shortid) %></li>
+      <li><%= preslist[pres].title %>(<%- link_to("View", "view/" + preslist[pres].shortid) %>) (<%- link_to("Present", "present/" + preslist[pres].shortid) %>)</li>
     <% } %>
     </ul>
   </body>

@@ -15,7 +15,21 @@ module.exports = function (app) {
                 res.send("id not found");
             }
             else {
-                res.render('view.ejs', {title: doc.title, html: doc.content.html, css: doc.content.css, jsfile: 'viewer.js'});
+                res.render('view.ejs', {title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, jsfile: 'viewer.js'});
+            }
+        });
+    });
+
+    app.get('/presentraw/:id', ensureAuthenticated, function(req, res) {
+        Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
+            if(err) {
+                res.send("error");
+            }
+            else if(!doc) {
+                res.send("id not found");
+            }
+            else {
+                res.render('view.ejs', {title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, jsfile: 'presenter.js'});
             }
         });
     });
@@ -29,7 +43,7 @@ module.exports = function (app) {
                 res.send("Not found");
             }
             else {
-                res.render('view.ejs', {title: doc.title, html: doc.content.html, css: doc.content.css, jsfile: 'presenter.js'});
+                res.render('present.ejs', {title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css});
             }
         });
     });

@@ -3,9 +3,6 @@ $(document).ready(function() {
     sync.init();
 });
 
-/********
- * Pong
- ********/
 var SlideSyncViewer = function() {
 
 }
@@ -15,9 +12,11 @@ SlideSyncViewer.prototype.init = function() {
     this.socket = io.connect('/');
     window.nativePostMessage = window.postMessage;
 
+    this.socket.emit('view', {presId: $('#presId').text()});
+
     // When getting a "receive" event from the server
     this.socket.on('receive', function(data) {
-        console.log("recv: " + data);
-        window.nativePostMessage("SET_" + data, "*");
+        console.log("recv: " + JSON.stringify(data));
+        window.nativePostMessage(data, "*");
     });
 }

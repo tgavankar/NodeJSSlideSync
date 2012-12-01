@@ -2,6 +2,7 @@
 
 <meta charset="utf-8">
 <title><%= title %></title>
+<span id="presId" style="display: none;"><%= presId %></span>
 
 <!-- Your Slides -->
 <!-- One section is one slide -->
@@ -9,13 +10,143 @@
 <%- html %>
 
 <!-- Your Style -->
+<style>
+  <%- css %>
+</style>
 <!-- Define the style of your presentation -->
 
 <!-- Maybe a font from http://www.google.com/webfonts ? -->
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
 
 <style>
-  <%- css %>
+  html, .view body { background-color: black; counter-reset: slideidx; }
+  body, .view section { background-color: white; border-radius: 12px }
+  /* A section is a slide. It's size is 800x600, and this will never change */
+  section, .view head > title {
+      /* The font from Google */
+      font-family: 'Oswald', arial, serif;
+      font-size: 30px;
+  }
+
+  .view section:after {
+    counter-increment: slideidx;
+    content: counter(slideidx, decimal-leading-zero);
+    position: absolute; bottom: -80px; right: 100px;
+    color: white;
+  }
+
+  .view head > title {
+    color: white;
+    text-align: center;
+    margin: 1em 0 1em 0;
+  }
+
+  h1, h2 {
+    margin-top: 200px;
+    text-align: center;
+    font-size: 80px;
+  }
+  h3 {
+    margin: 100px 0 50px 100px;
+  }
+
+  ul {
+      margin: 50px 200px;
+  }
+
+  p {
+    margin: 75px;
+    font-size: 50px;
+  }
+
+  blockquote {
+    height: 100%;
+    background-color: black;
+    color: white;
+    font-size: 60px;
+    padding: 50px;
+  }
+  blockquote:before {
+    content: open-quote;
+  }
+  blockquote:after {
+    content: close-quote;
+  }
+
+  /* Figures are displayed full-page, with the caption
+     on top of the image/video */
+  figure {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+  }
+  figure > * {
+    position: absolute;
+  }
+  figure > img, figure > video {
+    width: 100%; height: 100%;
+  }
+  figcaption {
+    margin: 70px;
+    font-size: 50px;
+  }
+
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 40px;
+    text-align: right;
+    background-color: #F3F4F8;
+    border-top: 1px solid #CCC;
+  }
+
+  /* Transition effect */
+  /* Feel free to change the transition effect for original
+     animations. See here:
+     https://developer.mozilla.org/en/CSS/CSS_transitions
+     How to use CSS3 Transitions: */
+  section {
+    -moz-transition: left 400ms linear 0s;
+    -webkit-transition: left 400ms linear 0s;
+    -ms-transition: left 400ms linear 0s;
+    transition: left 400ms linear 0s;
+  }
+  .view section {
+    -moz-transition: none;
+    -webkit-transition: none;
+    -ms-transition: none;
+    transition: none;
+  }
+
+  .view section[aria-selected] {
+    border: 5px red solid;
+  }
+
+  /* Before */
+  section { left: -150%; }
+  /* Now */
+  section[aria-selected] { left: 0; }
+  /* After */
+  section[aria-selected] ~ section { left: +150%; }
+
+  /* Incremental elements */
+
+  /* By default, visible */
+  .incremental > * { opacity: 1; }
+
+  /* The current item */
+  .incremental > *[aria-selected] { opacity: 1; }
+
+  /* The items to-be-selected */
+  .incremental > *[aria-selected] ~ * { opacity: 0; }
+
+  /* The progressbar, at the bottom of the slides, show the global
+     progress of the presentation. */
+  #progress-bar {
+    height: 2px;
+    background: #AAA;
+  }
 </style>
 
 <!-- {{{{ dzslides core
@@ -116,8 +247,8 @@
 
   Dz.init = function() {
     document.body.className = "loaded";
-    this.slides = Array.prototype.slice.call($$("body > section"));
-    this.progressBar = $("#progress-bar");
+    this.slides = Array.prototype.slice.call(fjqa("body > section"));
+    this.progressBar = fjq("#progress-bar");
     this.html = document.body.parentNode;
     this.setupParams();
     this.onhashchange();
@@ -134,7 +265,7 @@
     });
   // Specific params handling
     if (!+this.params.autoplay)
-      $$.forEach($$("video"), function(v){ v.controls = true });
+      fjqa.forEach(fjqa("video"), function(v){ v.controls = true });
   }
 
   Dz.onkeydown = function(aEvent) {
@@ -239,8 +370,8 @@
 
 
   Dz.getNotes = function(aIdx) {
-    var s = $("section:nth-of-type(" + aIdx + ")");
-    var d = s.$("[role='note']");
+    var s = fjq("section:nth-of-type(" + aIdx + ")");
+    var d = s.fjq("[role='note']");
     return d ? d.innerHTML : "";
   }
 
@@ -275,9 +406,9 @@
   Dz.toggleContent = function() {
     // If a Video is present in this new slide, play it.
     // If a Video is present in the previous slide, stop it.
-    var s = $("section[aria-selected]");
+    var s = fjq("section[aria-selected]");
     if (s) {
-      var video = s.$("video");
+      var video = s.fjq("video");
       if (video) {
         if (video.ended || video.paused) {
           video.play();
@@ -302,7 +433,7 @@
     if (cursor.length == 2) {
       newidx = ~~cursor[1].split(".")[0];
       newstep = ~~cursor[1].split(".")[1];
-      if (newstep > Dz.slides[newidx - 1].$$('.incremental > *').length) {
+      if (newstep > Dz.slides[newidx - 1].fjqa('.incremental > *').length) {
         newstep = 0;
         newidx++;
       }
@@ -325,7 +456,7 @@
     }
     if (this.step == 0) {
       this.setCursor(this.idx - 1,
-                     this.slides[this.idx - 2].$$('.incremental > *').length);
+                     this.slides[this.idx - 2].fjqa('.incremental > *').length);
     } else {
       this.setCursor(this.idx, this.step - 1);
     }
@@ -333,10 +464,10 @@
 
   Dz.forward = function() {
     if (this.idx >= this.slides.length &&
-        this.step >= this.slides[this.idx - 1].$$('.incremental > *').length) {
+        this.step >= this.slides[this.idx - 1].fjqa('.incremental > *').length) {
         return;
     }
-    if (this.step >= this.slides[this.idx - 1].$$('.incremental > *').length) {
+    if (this.step >= this.slides[this.idx - 1].fjqa('.incremental > *').length) {
       this.setCursor(this.idx + 1, 0);
     } else {
       this.setCursor(this.idx, this.step + 1);
@@ -349,7 +480,7 @@
 
   Dz.goEnd = function() {
     var lastIdx = this.slides.length;
-    var lastStep = this.slides[lastIdx - 1].$$('.incremental > *').length;
+    var lastStep = this.slides[lastIdx - 1].fjqa('.incremental > *').length;
     this.setCursor(lastIdx, lastStep);
   }
 
@@ -357,17 +488,17 @@
     this.html.classList.toggle("view");
 
     if (this.html.classList.contains("view")) {
-      $("section[aria-selected]").scrollIntoView(true);
+      fjq("section[aria-selected]").scrollIntoView(true);
     }
   }
 
   Dz.setSlide = function(aIdx) {
     this.idx = aIdx;
-    var old = $("section[aria-selected]");
-    var next = $("section:nth-of-type("+ this.idx +")");
+    var old = fjq("section[aria-selected]");
+    var next = fjq("section:nth-of-type("+ this.idx +")");
     if (old) {
       old.removeAttribute("aria-selected");
-      var video = old.$("video");
+      var video = old.fjq("video");
       if (video) {
         video.pause();
       }
@@ -377,7 +508,7 @@
       if (this.html.classList.contains("view")) {
         next.scrollIntoView();
       }
-      var video = next.$("video");
+      var video = next.fjq("video");
       if (video && !!+this.params.autoplay) {
         video.play();
       }
@@ -390,23 +521,23 @@
 
   Dz.setIncremental = function(aStep) {
     this.step = aStep;
-    var old = this.slides[this.idx - 1].$('.incremental > *[aria-selected]');
+    var old = this.slides[this.idx - 1].fjq('.incremental > *[aria-selected]');
     if (old) {
       old.removeAttribute('aria-selected');
     }
-    var incrementals = $$('.incremental');
+    var incrementals = fjqa('.incremental');
     if (this.step <= 0) {
-      $$.forEach(incrementals, function(aNode) {
+      fjqa.forEach(incrementals, function(aNode) {
         aNode.removeAttribute('active');
       });
       return;
     }
-    var next = this.slides[this.idx - 1].$$('.incremental > *')[this.step - 1];
+    var next = this.slides[this.idx - 1].fjqa('.incremental > *')[this.step - 1];
     if (next) {
       next.setAttribute('aria-selected', true);
       next.parentNode.setAttribute('active', true);
       var found = false;
-      $$.forEach(incrementals, function(aNode) {
+      fjqa.forEach(incrementals, function(aNode) {
         if (aNode != next.parentNode)
           if (found)
             aNode.removeAttribute('active');
@@ -422,7 +553,7 @@
   }
 
   Dz.goFullscreen = function() {
-    var html = $('html'),
+    var html = fjq('html'),
         requestFullscreen = html.requestFullscreen || html.requestFullScreen || html.mozRequestFullScreen || html.webkitRequestFullScreen;
     if (requestFullscreen) {
       requestFullscreen.apply(html);
@@ -430,10 +561,10 @@
   }
   
   Dz.setProgress = function(aIdx, aStep) {
-    var slide = $("section:nth-of-type("+ aIdx +")");
+    var slide = fjq("section:nth-of-type("+ aIdx +")");
     if (!slide)
       return;
-    var steps = slide.$$('.incremental > *').length + 1,
+    var steps = slide.fjqa('.incremental > *').length + 1,
         slideSize = 100 / (this.slides.length - 1),
         stepSize = slideSize / steps;
     this.progressBar.style.width = ((aIdx - 1) * slideSize + aStep * stepSize) + '%';
@@ -484,15 +615,15 @@
     };
   }
 
-  var $ = (HTMLElement.prototype.$ = function(aQuery) {
+  var fjq = (HTMLElement.prototype.fjq = function(aQuery) {
     return this.querySelector(aQuery);
   }).bind(document);
 
-  var $$ = (HTMLElement.prototype.$$ = function(aQuery) {
+  var fjqa = (HTMLElement.prototype.fjqa = function(aQuery) {
     return this.querySelectorAll(aQuery);
   }).bind(document);
 
-  $$.forEach = function(nodeList, fun) {
+  fjqa.forEach = function(nodeList, fun) {
     Array.prototype.forEach.call(nodeList, fun);
   }
 

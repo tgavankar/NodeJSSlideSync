@@ -7,19 +7,17 @@
   <iframe></iframe>
 </div>
 
-<div id="future">
-  <iframe></iframe>
-</div>
-
 <div id="slideidx" onclick="Dz.setCursor(prompt('Go to slide...','1'));">?</div>
 <div id="nextslideidx">?</div>
 
 <div id="notes">
-  <p id="content"></p>
+  <div id="back" onclick="Dz.back()">Back</div>
+  <div id="content"></div>
+  <div id="next" onclick="Dz.forward()">Next</div>
 </div>
 
-<div id="slidecount">?</div>
-<button id="popup-button" onclick="Dz.popup()">Pop-up</button>
+<!--<div id="slidecount">?</div>
+<button id="popup-button" onclick="Dz.popup()">Pop-up</button>-->
 
 <div id="time">
   <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
@@ -36,25 +34,17 @@
     overflow: hidden;
   }
 
-  #present, #future {
+  #present {
     bottom: 234px;
     position: absolute;
     top: 0;
     z-index: 5;
-  }
-
-  #present {
+    width: 100%;
     left: 0;
-    right: 50%;
     border-right: 4px solid #555;
   }
 
-  #future {
-    left: 50%;
-    right: 0;
-    border-left: 4px solid #555;
-  }
-
+ 
   #notes {
     background: #EEE;
     border-top: 8px solid #555;
@@ -63,31 +53,36 @@
     font-size: 30px;
     height: 226px;
     left: 0;
-    padding: 0 250px 0 20px;
+    padding: 0;
     position: absolute;
     right: 0;
     overflow: auto;
+    text-align: center;
   }
 
   #time {
     background: #888;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    bottom: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    top: 0;
     font-size: 40px;
     font-weight: bold;
+    padding-top: 3px;
     height: 52px;
     line-height: 52px;
     right: 30px;
     position: absolute;
     text-align: center;
     width: 200px;
+    z-index: 10;
+    opacity:0.75;
+    filter:alpha(opacity=75);
   }
 
   iframe {
     border: none;
     height: 100%;
-    pointer-events: none;
+    /*pointer-events: none;*/
     width: 100%;
   }
 
@@ -148,6 +143,35 @@
     right: 30px;
     width: 200px;
     z-index: 10;
+  }
+
+  #content {
+    pointer-events: none;
+    z-index: 5;
+    
+
+  }
+
+  #back, #next {
+    background-color: #AAA;
+    height: 100%;
+    width: 50%;
+    position: absolute;
+    top: 0;
+    line-height: 1.5em;
+    font-size: 5em;
+    opacity: 0.25;
+    filter: alpha(25);
+  }
+
+  #back {
+    left: 0;
+    border-right: 2px solid #555;
+  }
+
+  #next {
+    right: 0;
+    border-left: 2px solid #555;
   }
 </style>
 
@@ -210,7 +234,7 @@
         this.idx = ~~cursor[0];
         this.step = ~~cursor[1];
         $("#slideidx").innerHTML = argv[1];
-        this.postMsg(this.views.future, "SET_CURSOR", this.idx + "." + (this.step + 1));
+        //this.postMsg(this.views.future, "SET_CURSOR", this.idx + "." + (this.step + 1));
         if (this.views.remote)
           this.postMsg(this.views.remote, "SET_CURSOR", argv[1]);
       } else {
@@ -221,7 +245,7 @@
       if (argv[0] === "NOTES" && argc === 2)
         $("#notes > #content").innerHTML = this.notes = argv[1];
       if (argv[0] === "REGISTERED" && argc === 3)
-        $("#slidecount").innerHTML = argv[2];
+        $("#nextslideidx").innerHTML = argv[2];
     }
   }
   
@@ -245,15 +269,15 @@
   
   Dz.loadIframes = function() {
     var present = $("#present iframe");
-    var future = $("#future iframe");
+    //var future = $("#future iframe");
     this.url = this.getUrl();
-    present.src = future.src = this.url + '?autoplay=0';
-    present.onload = future.onload = function() {
+    present.src = /*future.src =*/ this.url + '?autoplay=0';
+    present.onload = /*future.onload =*/ function() {
       var id = this.parentNode.id;
       Dz.views[id] = this.contentWindow;
-      if (Dz.views.present && Dz.views.future) {
+      if (Dz.views.present /*&& Dz.views.future*/) {
         Dz.postMsg(Dz.views.present, "REGISTER");
-        Dz.postMsg(Dz.views.future, "REGISTER");
+        //Dz.postMsg(Dz.views.future, "REGISTER");
       }
     }
   }
