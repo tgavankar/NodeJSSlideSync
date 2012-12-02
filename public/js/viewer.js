@@ -14,9 +14,26 @@ SlideSyncViewer.prototype.init = function() {
 
     this.socket.emit('view', {presId: $('#presId').text()});
 
+    this.follow = true;
+
     // When getting a "receive" event from the server
     this.socket.on('receive', function(data) {
         console.log("recv: " + JSON.stringify(data));
-        window.nativePostMessage(data, "*");
-    });
+        console.log(this.follow);
+        if(this.follow) {
+            window.nativePostMessage(data, "*");
+        }
+    }.bind(this));
+
+    $("#follower").show();
+
+    $("#follower").click(function() {
+        this.follow = !this.follow;
+        if(this.follow) {
+            $("#follower").text("Stop Following");
+        }
+        else {
+            $("#follower").text("Start Following");
+        }
+    }.bind(this));
 }

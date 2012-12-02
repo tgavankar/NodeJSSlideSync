@@ -9,6 +9,8 @@
 
 <%- html %>
 
+<div id="follower">Stop Following</div>
+
 <!-- Your Style -->
 <style>
   <%- css %>
@@ -19,6 +21,26 @@
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
 
 <style>
+  #follower {
+    display: none;
+    background-color: #AAA;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    opacity: 0.25;
+    filter: alpha(25);
+    color: black;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 12px;
+    font-family: 'Oswald', arial, serif;
+  }
+
+  #follower:hover {
+    opacity: 0.75;
+    filter: alpha(75);
+  }
+
   html, .view body { background-color: black; counter-reset: slideidx; }
   body, .view section { background-color: white; border-radius: 12px }
   /* A section is a slide. It's size is 800x600, and this will never change */
