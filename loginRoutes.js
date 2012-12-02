@@ -5,7 +5,7 @@ module.exports = function (app) {
     
     app.get('/register', function(req, res) {
         if(req.user === undefined) {
-            res.render('register.ejs');
+            res.render('register.ejs', {user: req.user});
         }
         else {
             res.redirect('/');
@@ -14,7 +14,7 @@ module.exports = function (app) {
 
     app.get('/login', function (req, res) {
         if (req.user === undefined){
-            res.render('login.ejs');
+            res.render('login.ejs', {user: req.user});
         }
         else {
             res.redirect('/');
@@ -32,7 +32,9 @@ module.exports = function (app) {
         req.user.lastHost = req.host;
         req.user.lastLoginTimestamp = new Date();
         req.user.save();
-        return res.send('bob=tail');
+        var redirect_to = req.session.redirect_to ? req.session.redirect_to : '/';
+        delete req.session.redirect_to;
+        return res.send({'redirect_to': redirect_to});
     });
 
     app.post('/register', function(req, res) {

@@ -1,10 +1,4 @@
-<html>
-<head>
-    <title> SlideSync </title>
-    <meta name='viewport' content='initial-scale=1.0 maximum-scale=1.0 minimum-scale=1.0 user-scalable=0' />
-
-    <script src="/lib/jquery-1.8.2.min.js"></script>
-
+<%- include parts/top.ejs %> 
     <script>
         $(document).ready(function(){
             $('#register').submit(function(e) {
@@ -36,8 +30,7 @@
             });
         }
     </script>
-</head>
-<body>
+
     <h2>Register</h2>
     <div>
         <form id="register">
@@ -58,5 +51,4 @@
             </div>
         </form>
     </div>
-</body>
-</html>
+<%- include parts/bottom.ejs %> 

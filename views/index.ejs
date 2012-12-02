@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/css/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-    <% if(!user) { %>
-    <a href="login">Login</a>
-    <a href="register">Register</a>
-    <% } else { %>
-    <span>Welcome, <%= user.username %></span>
-    <a href="logout">Logout</a>
-    <% } %>
-    <a href="list">My Presentations</a>
-    <a href="create">Create</a>
-  </body>
-</html>
+<%- include parts/top.ejs %> 
+			
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et tortor tellus, semper bibendum purus. Mauris vel odio nec orci condimentum lobortis. Morbi metus felis, semper ut volutpat quis, malesuada sed nisl. Nulla id dui velit. Pellentesque a neque leo. Vestibulum convallis rutrum leo, convallis egestas arcu consectetur at. Aliquam tempor erat et lacus lobortis pretium. In lobortis luctus nibh eget sollicitudin. Proin laoreet, dui non aliquet dignissim, ipsum leo semper dolor, suscipit posuere ipsum nisi eu ipsum. Quisque egestas ornare mi, ac imperdiet odio venenatis a. Sed quis rutrum sem. Donec sem justo, dapibus sed dignissim a, sollicitudin non turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed at augue sed sem varius condimentum eget a metus. Sed vitae massa augue. Nulla non eros ut nunc tempus egestas non sit amet eros.</p>
+<p>
+Vestibulum ligula enim, tincidunt sit amet varius eget, mattis at risus. Vestibulum et eros lorem. Praesent vestibulum tortor sed dolor pulvinar ac suscipit diam consequat. Vestibulum et lacus vitae augue varius porttitor ut vel tellus. Duis in nibh suscipit orci egestas malesuada vulputate quis magna. Duis commodo, mauris et gravida elementum, ipsum est condimentum orci, nec eleifend orci nibh ut tellus. Sed a lacus scelerisque neque mollis facilisis varius scelerisque nunc. In euismod hendrerit quam in ornare.
+</p><p>
+Suspendisse vel fermentum tortor. Mauris rutrum congue viverra. Nam adipiscing dui ornare leo posuere adipiscing. Donec risus erat, blandit vel vulputate nec, ultrices eget turpis. Ut non felis libero. Phasellus iaculis sapien in metus tempus sed euismod tellus sodales. Morbi mollis accumsan augue eget luctus.
+</p><p>
+Donec dignissim convallis erat eget semper. Duis facilisis cursus ullamcorper. Duis malesuada eros ac risus tempor et gravida felis tincidunt. Phasellus laoreet dolor at diam porta luctus. Etiam dolor metus, molestie id suscipit in, ultrices eu enim. Vivamus consequat metus sit amet odio egestas eget consectetur turpis rutrum. Praesent eleifend placerat sem ac ultricies. Suspendisse eu tortor quam, quis elementum lectus. Aliquam porta fringilla scelerisque. Curabitur viverra felis eu diam aliquet id facilisis lorem hendrerit. Pellentesque molestie hendrerit lacus, ac mattis neque semper at. Curabitur egestas auctor turpis, sed lobortis massa bibendum vitae. Etiam sed augue non massa malesuada cursus et sit amet justo.
+</p><p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed justo et eros pharetra fermentum. Nam eu mollis tortor. Nulla laoreet pulvinar dapibus. Pellentesque lectus ante, auctor vel ultricies molestie, tincidunt vitae risus. Praesent a est augue, et rhoncus nunc. Vestibulum sit amet dignissim nisl. Ut tempus metus non diam molestie dapibus. Donec eleifend facilisis odio, a tempor dolor dictum at. </p>
+
+<%- include parts/bottom.ejs %>

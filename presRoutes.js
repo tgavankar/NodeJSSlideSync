@@ -15,12 +15,12 @@ module.exports = function (app) {
                 res.send("id not found");
             }
             else {
-                res.render('view.ejs', {title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, jsfile: 'viewer.js'});
+                res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, jsfile: 'viewer.js'});
             }
         });
     });
 
-    app.get('/presentraw/:id', ensureAuthenticated, function(req, res) {
+    app.get('/praw/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
                 res.send("error");
@@ -29,7 +29,7 @@ module.exports = function (app) {
                 res.send("id not found");
             }
             else {
-                res.render('view.ejs', {title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, jsfile: 'presenter.js'});
+                res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, jsfile: 'presenter.js'});
             }
         });
     });
@@ -43,20 +43,20 @@ module.exports = function (app) {
                 res.send("Not found");
             }
             else {
-                res.render('present.ejs', {title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css});
+                res.render('present.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css});
             }
         });
     });
 
     app.get('/list', ensureAuthenticated, function(req, res) {
         var presentations = Presentation.find({_creator: req.user}, function(err, docs) {
-            res.render('list.ejs', {title: 'SlideSync', preslist: docs});
+            res.render('list.ejs', {user: req.user, preslist: docs});
         });
         
     });
 
     app.get('/create', ensureAuthenticated, function(req, res) {
-        res.render('create.ejs', {});
+        res.render('create.ejs', {user: req.user});
     });
 
     app.post('/create', ensureAuthenticated, function(req, res) {

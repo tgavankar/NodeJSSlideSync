@@ -1,0 +1,23 @@
+		</div>
+		
+		<nav id="primary_nav">
+			<a name="nav"></a>
+			<ul>
+				<% if(!user) {%>
+					<li><a href="/login">Login</a></li>
+					<li><a href="/register">Register</a></li>
+				<% } else { %>
+					<li><a href="/list">Presentations</a></li>
+					<li><a href="/create">New</a></li>
+					<li><a href="/logout">Log Out</a></li>
+				<% } %>
+				<li class="top"><a href="#home">Top</a></li>
+			</ul>
+		</nav>
+	
+		<footer>
+			Copyright &copy; 2012 Tanay Gavankar
+		</footer>
+	</div>
+  </body>
+</html>
