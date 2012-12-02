@@ -1,36 +1,46 @@
 <!DOCTYPE html>
 <script>
-var url = '/upload/<%= presId %>.pdf';
+var PdfJs = function() {}
 
-PDFJS.workerSrc = '/lib/pdf/pdf.js';
+PdfJs.prototype.init = function() {
+	this.url = '/upload/<%= presId %>.pdf',
+	this.pdfDoc = null,
+	this.pageNum = 1,
+	this.scale = 1,
+	this.canvas = document.getElementById('pdfCanvas'),
 
-var pdfDoc = null,
-pageNum = 1,
-scale = 1;
-canvas = document.getElementById('pdfCanvas'),
-ctx = canvas.getContext('2d');
+	console.log(this);
+	this.ctx = this.canvas.getContext('2d');
+	PDFJS.workerSrc = '/lib/pdf/pdf.js'
+	PDFJS.getDocument(this.url).then(function getPdf(_pdfDoc) {
+		this.pdfDoc = _pdfDoc;
+		this.renderPage(this.pageNum);
+	}.bind(this));
 
-function renderPage(num) {
+	window.onmessage = this.onMessage.bind(this);
+}
+
+PdfJs.prototype.renderPage = function(num) {
 	// Using promise to fetch the page
 
-	pdfDoc.getPage(num).then(function(page) {
+	this.pdfDoc.getPage(num).then(function(page) {
 		var origViewport = page.getViewport(1);
 
 		var sx = origViewport.width / window.innerWidth;
 		var sy = origViewport.height / window.innerHeight;
-		scale = (1/Math.max(sx, sy))
+		this.scale = (1/Math.max(sx, sy))
 
-		var viewport = page.getViewport(scale);
-		canvas.height = viewport.height;
-		canvas.width = viewport.width;
+		var viewport = page.getViewport(this.scale);
+		this.canvas.height = viewport.height;
+		this.canvas.width = viewport.width;
 
 		// Render PDF page into canvas context
 		var renderContext = {
-			canvasContext: ctx,
+			canvasContext: this.ctx,
 			viewport: viewport
 		};
 		page.render(renderContext);
-	});
+	}.bind(this));
 
 	// Update page counters
 	//document.getElementById('page_num').textContent = pageNum;
@@ -40,28 +50,36 @@ function renderPage(num) {
 //
 // Go to previous page
 //
-function goPrevious() {
-	if (pageNum <= 1)
+PdfJs.prototype.back = function() {
+	if (this.pageNum <= 1)
 		return;
-	pageNum--;
-	renderPage(pageNum);
+	this.pageNum--;
+	this.renderPage(this.pageNum);
 }
 
 //
 // Go to next page
 //
-function goNext() {
-	if (pageNum >= pdfDoc.numPages)
+PdfJs.prototype.forward = function() {
+	if (this.pageNum >= this.pdfDoc.numPages)
 		return;
-	pageNum++;
-	renderPage(pageNum);
+	this.pageNum++;
+	this.renderPage(this.pageNum);
 }
 
-//
-// Asynchronously download PDF as an ArrayBuffer
-//
-PDFJS.getDocument(url).then(function getPdfHelloWorld(_pdfDoc) {
-	pdfDoc = _pdfDoc;
-	renderPage(pageNum);
+PdfJs.prototype.onMessage = function(aEvent) {
+    var cmd = aEvent.data;
+    argv.forEach(function(e, i, a) { a[i] = decodeURIComponent(e) });
+
+    if (cmd === "BACK")
+      this.back();
+    if (cmd === "FORWARD")
+      this.forward();
+}
+
+$(document).ready(function() {
+	var pdf = new PdfJs();
+	pdf.init();
 });
+
 </script>
