@@ -1,3 +1,6 @@
+var path = require('path');
+var fs = require('fs');
+var util = require('util');
 var passport = require('passport');
 var User = require('./models/User');
 var Presentation = require('./models/Presentation');
@@ -15,7 +18,12 @@ module.exports = function (app) {
                 res.send("id not found");
             }
             else {
-                res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, jsfile: 'viewer.js'});
+                if(doc.type === "dzslides") {
+                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, presType: 'dz', jsfile: 'viewer.js'});
+                }
+                else if(doc.type === "pdf") {
+                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, presType: 'pdf', jsfile: 'viewer.js'});   
+                }
             }
         });
     });
@@ -29,7 +37,7 @@ module.exports = function (app) {
                 res.send("id not found");
             }
             else {
-                res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, jsfile: 'presenter.js'});
+                res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, presType: 'dz', jsfile: 'presenter.js'});
             }
         });
     });
@@ -65,7 +73,7 @@ module.exports = function (app) {
 
             Presentation.findOne({shortid : shortid }, function(err, exists) {
                 if (err){
-                    return {'err': err};
+                    return {err: err};
                 }
                 if (exists) {
                     return makePres();
@@ -78,12 +86,31 @@ module.exports = function (app) {
                 pres.modifiedTimestamp = new Date();
                 pres.type = req.body.type;
                 pres._creator = req.user;
-                pres.content = {html: req.body.html, css: req.body.css};
+
+                if(req.body.type === "dzslides") {
+                    pres.content = {html: req.body.html, css: req.body.css};
+                }
+                else if(req.body.type === "pdf") {
+                    var destPath = path.join(__dirname, 'public', 'upload', shortid + '.pdf');
+                    var is = fs.createReadStream(req.files.pdfFile.path);
+                    var os = fs.createWriteStream(destPath);
+
+                    util.pump(is, os, function() {
+                        fs.unlinkSync(req.files.pdfFile.path);
+                    });
+
+                    pres.content = {path: shortid + '.pdf'};
+                }
+                else {
+                    return {err: 'Invalid type'};
+                }
+
+                
                 pres.save(function(err) {
                     if(err) {
-                        return {'err': err};
+                        return {err: err};
                     }
-                    return 'created!';
+                    return shortid;
                 });
             });
         }

@@ -1,10 +1,13 @@
 <%- include parts/top.ejs %> 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
+            $('#pdfslides').hide();
+
             $('#create').submit(function(e) {
                 e.preventDefault();
 
                 function success(data){
+                    console.log(arguments);
                     alert(JSON.stringify(data));
                 }
 
@@ -12,7 +15,7 @@
                     alert(JSON.stringify(err));
                 }
 
-                $.ajax({
+                /*$.ajax({
                     url: '/create',
                     data: {title: $('#title').val(),
                            desc: $('#desc').val(),
@@ -23,29 +26,51 @@
                     type: 'POST',
                     success: success,
                     error: error
+                });*/
+
+                $(this).ajaxSubmit( {
+                    error: error,
+                    success: success
                 });
+            });
+
+            $('#type').change(function() {
+                $('#dzslides').toggle();
+                $('#pdfslides').toggle();
             });
         });
     </script>
 
     <h2>Create</h2>
     <div>
-        <form id="create">
+        <form id="create" action="/create" method="post" enctype="multipart/form-data">
             <div>
                 <label> Title </label>
-                <input id="title" />
+                <input id="title" name="title" />
             </div>
             <div>
                 <label> Description </label>
-                <input id="desc" />
+                <input id="desc" name="desc" />
             </div>
             <div>
-                <label> HTML (dzSlides) </label>
-                <textarea id="html"> </textarea>
+                <label> Type: </label>
+                <select id="type" name="type">
+                    <option value="dzslide">DzSlides (HTML/CSS)</option>
+                    <option value="pdf">PDF (Upload)</option>
+                </select>
+            <div id="dzslides">
+                <div>
+                    <label> HTML (dzSlides) </label>
+                    <textarea id="html" name="html"> </textarea>
+                </div>
+                <div>
+                    <label> CSS (dzSlides) </label>
+                    <textarea id="css" name="css"> </textarea>
+                </div>
             </div>
-            <div>
-                <label> CSS (dzSlides) </label>
-                <textarea id="css"> </textarea>
+            <div id="pdfslides">
+                <label> PDF File </label>
+                <input type="file" id="pdffile" name="pdfFile" />
             </div>
             <div>
                 <button id="createButton"> Create </button>
