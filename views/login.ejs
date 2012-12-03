@@ -15,11 +15,7 @@
                     alert(JSON.stringify(err));
                 }
 
-                $.ajax({
-                    url: '/login',
-                    data: {username: username, password: password},
-                    cache: false,
-                    type: 'POST',
+                $(this).ajaxSubmit({
                     success: success,
                     error: error
                 });
@@ -28,15 +24,16 @@
     </script>
 
     <h2>Login</h2>
-    <form id="login">
+    <form id="login" action="/login" method="POST">
+        <input type="hidden" name="_csrf" value="<%= token %>" />
         <div>
             <div>
                 <label> Username </label>
-                <input id="loginUsername" type="username"/>
+                <input id="loginUsername" name="username" type="username"/>
             </div>
             <div>
                 <label> Password </label>
-                <input id="loginPassword" type="password"/>
+                <input id="loginPassword" name="password" type="password"/>
             </div>
             <div>
                 <button id="loginButton"> Login </button>

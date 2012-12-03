@@ -6,6 +6,7 @@ var User = require('./models/User');
 var Presentation = require('./models/Presentation');
 var ensureAuthenticated = require('./middleware/ensureAuthenticated');
 var _ = require('underscore');
+var csrf = require('./middleware/csrf');
 
 module.exports = function (app) {
     
@@ -19,10 +20,20 @@ module.exports = function (app) {
             }
             else {
                 if(doc.type === "dzslides") {
-                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, presType: doc.type, jsfile: 'viewer.js'});
+                    res.render('view.ejs', {user: req.user, 
+                                            title: doc.title, 
+                                            presId: doc.shortid, 
+                                            html: doc.content.html, 
+                                            css: doc.content.css, 
+                                            presType: doc.type, 
+                                            jsfile: 'viewer.js'});
                 }
                 else if(doc.type === "pdf") {
-                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, presType: doc.type, jsfile: 'viewer.js'});   
+                    res.render('view.ejs', {user: req.user, 
+                                            title: doc.title, 
+                                            presId: doc.shortid, 
+                                            presType: doc.type, 
+                                            jsfile: 'viewer.js'});   
                 }
             }
         });
@@ -38,10 +49,20 @@ module.exports = function (app) {
             }
             else {
                 if(doc.type === "dzslides") {
-                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, presType: doc.type, jsfile: 'presenter.js'});    
+                    res.render('view.ejs', {user: req.user, 
+                                            title: doc.title, 
+                                            presId: doc.shortid, 
+                                            html: doc.content.html, 
+                                            css: doc.content.css, 
+                                            presType: doc.type, 
+                                            jsfile: 'presenter.js'});    
                 }
                 else if(doc.type === "pdf") {
-                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, presType: doc.type, jsfile: 'presenter.js'});
+                    res.render('view.ejs', {user: req.user, 
+                                            title: doc.title, 
+                                            presId: doc.shortid, 
+                                            presType: doc.type, 
+                                            jsfile: 'presenter.js'});
                 }
                 
             }
@@ -74,7 +95,7 @@ module.exports = function (app) {
         
     });
 
-    app.get('/create', ensureAuthenticated, function(req, res) {
+    app.get('/create', ensureAuthenticated, csrf, function(req, res) {
         res.render('create.ejs', {user: req.user});
     });
 

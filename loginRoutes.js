@@ -1,9 +1,10 @@
 var passport = require('passport');
 var User = require('./models/User');
+var csrf = require('./middleware/csrf');
 
 module.exports = function (app) {
     
-    app.get('/register', function(req, res) {
+    app.get('/register', csrf, function(req, res) {
         if(req.user === undefined) {
             res.render('register.ejs', {user: req.user});
         }
@@ -12,7 +13,7 @@ module.exports = function (app) {
         }
     });
 
-    app.get('/login', function (req, res) {
+    app.get('/login', csrf, function (req, res) {
         if (req.user === undefined){
             res.render('login.ejs', {user: req.user});
         }

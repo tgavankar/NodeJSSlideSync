@@ -35,6 +35,7 @@ function configureExpress(app){
 
         app.use(express.cookieParser('ABN93bKhae0H3b'));
         app.use(express.session());
+        app.use(express.csrf());
 
         app.use(passport.initialize());
         app.use(passport.session());

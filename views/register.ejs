@@ -15,11 +15,7 @@
                 }
 
                 if(password === $("#regPasswordConf").val()) {
-                    $.ajax({
-                        url: '/register',
-                        data: {username: username, password: password},
-                        cache: false,
-                        type: 'POST',
+                    $(this).ajaxSubmit({
                         success: success,
                         error: error
                     });
@@ -34,13 +30,14 @@
     <h2>Register</h2>
     <div>
         <form id="register">
+            <input type="hidden" name="_csrf" value="<%= token %>" />
             <div>
                 <label> Username </label>
-                <input id="regUsername" type="username"/>
+                <input id="regUsername" name="username" type="username"/>
             </div>
             <div>
                 <label> Password </label>
-                <input id="regPassword" type="password"/>
+                <input id="regPassword" name="password" type="password"/>
             </div>
             <div>
                 <label> Confirm Password </label>
