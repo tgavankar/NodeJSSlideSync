@@ -3,7 +3,7 @@
         $(document).ready(function() {
             $('#pdfslides').hide();
 
-            $('#create').submit(function(e) {
+            $('#save').submit(function(e) {
                 e.preventDefault();
 
                 function success(data){
@@ -25,35 +25,39 @@
                 $('#dzslides').toggle();
                 $('#pdfslides').toggle();
             });
+
+            if("<%= presType %>" === "pdf") {
+                $('#type').change();
+            }
         });
     </script>
 
-    <h2>Create</h2>
+    <h2>Save</h2>
     <div>
-        <form id="create" action="/create" method="post" enctype="multipart/form-data">
+        <form id="save" action="<%= action %>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="<%= token %>" />
             <div>
                 <label> Title </label>
-                <input id="title" name="title" />
+                <input id="title" name="title" value="<%= title %>" />
             </div>
             <div>
                 <label> Description </label>
-                <input id="desc" name="desc" />
+                <input id="desc" name="desc" value="<%= desc %>" />
             </div>
             <div>
                 <label> Type: </label>
                 <select id="type" name="type">
-                    <option value="dzslides">DzSlides (HTML/CSS)</option>
-                    <option value="pdf">PDF (Upload)</option>
+                    <option <% if(presType === "dzslides") { %> selected="selected" <% } %> value="dzslides">DzSlides (HTML/CSS)</option>
+                    <option <% if(presType === "pdf") { %> selected="selected" <% } %> value="pdf">PDF (Upload)</option>
                 </select>
             <div id="dzslides">
                 <div>
                     <label> HTML (dzSlides) </label>
-                    <textarea id="html" name="html"> </textarea>
+                    <textarea id="html" name="html"><%= html %></textarea>
                 </div>
                 <div>
                     <label> CSS (dzSlides) </label>
-                    <textarea id="css" name="css"> </textarea>
+                    <textarea id="css" name="css"><%= css %></textarea>
                 </div>
             </div>
             <div id="pdfslides">
@@ -61,7 +65,7 @@
                 <input type="file" id="pdffile" name="pdfFile" />
             </div>
             <div>
-                <button id="createButton"> Create </button>
+                <button id="saveButton"> Save </button>
             </div>
         </form>
     </div>

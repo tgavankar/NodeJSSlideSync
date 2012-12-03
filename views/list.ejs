@@ -1,7 +1,15 @@
 <%- include parts/top.ejs %> 
+  <script>
+    $(document).ready(function() {
+      $('.delete').click(function(e) {
+        e.preventDefault();
+        $.post('/delete/' + $(this).data("id"), {_csrf: '<%= token %>'}, function(data, status) { $(this).parent().hide(); }.bind(this));
+      })
+    });
+  </script>
     <ul>
     <% for(pres in preslist) { %>
-      <li><%= preslist[pres].title %> (<%- link_to("View", "view/" + preslist[pres].shortid) %>) (<%- link_to("Present", "present/" + preslist[pres].shortid) %>)</li>
+      <li><%= preslist[pres].title %> [<%= preslist[pres].type %>] (<%- link_to("View", "/view/" + preslist[pres].shortid) %>) (<%- link_to("Present", "/present/" + preslist[pres].shortid) %>) (<%- link_to("Edit", "/edit/" + preslist[pres].shortid) %>) (<a href="#" class="delete" data-id="<%= preslist[pres].shortid %>">Delete</a>)</li>
     <% } %>
     </ul>
 <%- include parts/bottom.ejs %>

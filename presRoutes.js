@@ -49,8 +49,7 @@ module.exports = function (app) {
             }
             else {
                 if(doc.type === "dzslides") {
-                    res.render('view.ejs', {user: req.user, 
-                                            title: doc.title, 
+                    res.render('view.ejs', {title: doc.title, 
                                             presId: doc.shortid, 
                                             html: doc.content.html, 
                                             css: doc.content.css, 
@@ -58,8 +57,7 @@ module.exports = function (app) {
                                             jsfile: 'presenter.js'});    
                 }
                 else if(doc.type === "pdf") {
-                    res.render('view.ejs', {user: req.user, 
-                                            title: doc.title, 
+                    res.render('view.ejs', {title: doc.title, 
                                             presId: doc.shortid, 
                                             presType: doc.type, 
                                             jsfile: 'presenter.js'});
@@ -79,24 +77,24 @@ module.exports = function (app) {
             }
             else {
                 if(doc.type === "dzslides") {
-                    res.render('present.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css});
+                    res.render('present.ejs', {title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css});
                 }
                 else if(doc.type === "pdf") {
-                    res.render('present.ejs', {user: req.user, title: doc.title, presId: doc.shortid, presType: doc.type})
+                    res.render('present.ejs', {title: doc.title, presId: doc.shortid, presType: doc.type})
                 }
             }
         });
     });
 
-    app.get('/list', ensureAuthenticated, function(req, res) {
+    app.get('/list', ensureAuthenticated, csrf, function(req, res) {
         var presentations = Presentation.find({_creator: req.user}, function(err, docs) {
-            res.render('list.ejs', {user: req.user, preslist: docs});
+            res.render('list.ejs', {preslist: docs});
         });
         
     });
 
     app.get('/create', ensureAuthenticated, csrf, function(req, res) {
-        res.render('create.ejs', {user: req.user});
+        res.render('create.ejs', {presType: 'dzslides', title: '', desc: '', html: '', css: '', action: '/create'});
     });
 
     app.post('/create', ensureAuthenticated, function(req, res) {
@@ -148,5 +146,87 @@ module.exports = function (app) {
         }
 
         res.send(makePres());
+    });
+
+    app.get('/edit/:id', ensureAuthenticated, csrf, function(req, res) {
+        Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
+            if(err) {
+                res.send("error");
+            }
+            else if(!doc) {
+                res.send("Not found");
+            }
+            else {
+                if(doc.type === "dzslides") {
+                    res.render('create.ejs', {title: doc.title, presId: doc.shortid, presType: doc.type, desc: doc.desc, html: doc.content.html, css: doc.content.css, action: '/edit/' + req.params.id});
+                }
+                else if(doc.type === "pdf") {
+                    res.render('create.ejs', {title: doc.title, presId: doc.shortid, presType: doc.type, desc: doc.desc, html: '', css: '', action: '/edit/' + req.params.id})
+                }
+            }
+        });
+    });
+
+    app.post('/edit/:id', ensureAuthenticated, function(req, res) {
+        Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
+            if(err) {
+                res.send("error");
+            }
+            else if(!doc) {
+                res.send("Not found");
+            }
+            else {
+                doc.title = req.body.title;
+                doc.desc = req.body.desc;
+                doc.modifiedTimestamp = new Date();
+
+                if(req.body.type === "dzslides") {
+                    doc.content = {html: req.body.html, css: req.body.css};
+                }
+                else if(req.body.type === "pdf") {
+                    var destPath = path.join(__dirname, 'public', 'upload', doc.shortid + '.pdf');
+                    var is = fs.createReadStream(req.files.pdfFile.path);
+                    var os = fs.createWriteStream(destPath);
+
+                    util.pump(is, os, function() {
+                        fs.unlinkSync(req.files.pdfFile.path);
+                    });
+
+                    doc.content = {path: doc.shortid + '.pdf'};
+                }
+                doc.type = req.body.type;
+                doc.save(function(err) {
+                    if(err) {
+                        res.send('error');
+                    }
+                    else {
+                        res.send(doc.shortid);
+                    }
+                });
+
+            }
+        });
+    });
+
+    app.post('/delete/:id', ensureAuthenticated, csrf, function(req, res) {
+        Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
+            if(err) {
+                res.send("error");
+            }
+            else if(!doc) {
+                res.send("Not found");
+            }
+            else {
+                if(req.body.type === "pdf") {
+                    fs.unlinkSync(path.join(__dirname, 'public', 'upload', shortid + '.pdf'));
+                }
+
+                doc.remove();
+
+                res.send('success');
+                return;
+            }
+            res.send('error');
+        });
     });
 }
