@@ -52,7 +52,7 @@ SlideSyncPresenter.prototype.registerRedis = function() {
 
     $.ajax({
         url: '/redis/regpub',
-        data: {id: $('#presId').text()},
+        data: {id: $('#presId').text(), _csrf: $('#csrf').text()},
         cache: false,
         type: 'POST',
         success: success,

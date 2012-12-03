@@ -3,6 +3,11 @@
 <meta charset="utf8">
 <title>DZSlides</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<span id="csrf" style="display: none;"><%= token %></span>
+
+<script src="/lib/jquery-1.8.2.min.js"></script>
+
 <div id="present">
   <iframe></iframe>
 </div>
@@ -11,9 +16,9 @@
 <div id="totalslidecount">?</div>
 
 <div id="notes">
-  <div id="back" onclick="Dz.back()">Back</div>
+  <div id="back"><span class="valign">Back</span></div>
   <div id="content"></div>
-  <div id="next" onclick="Dz.forward()">Next</div>
+  <div id="next"><span class="valign">Next</span></div>
 </div>
 
 <!--<div id="slidecount">?</div>
@@ -35,7 +40,7 @@
   }
 
   #present {
-    bottom: 234px;
+    bottom: 125px;
     position: absolute;
     top: 0;
     z-index: 5;
@@ -51,7 +56,7 @@
     bottom: 0;
     color: #444;
     font-size: 30px;
-    height: 226px;
+    height: 125px;
     left: 0;
     padding: 0;
     position: absolute;
@@ -75,14 +80,13 @@
     text-align: center;
     width: 200px;
     z-index: 10;
-    opacity:0.75;
-    filter:alpha(opacity=75);
+    opacity:0.5;
+    filter:alpha(opacity=5);
   }
 
   iframe {
     border: none;
     height: 100%;
-    /*pointer-events: none;*/
     width: 100%;
   }
 
@@ -103,7 +107,7 @@
   #slideidx,
   #totalslidecount {
     border-bottom: 4px solid #555;
-    bottom: 230px;
+    bottom: 125px;
     padding: 0 10px;
   }
 
@@ -158,10 +162,9 @@
     width: 50%;
     position: absolute;
     top: 0;
-    line-height: 1.5em;
-    font-size: 5em;
     opacity: 0.25;
     filter: alpha(25);
+    text-align: left;
   }
 
   #back {
@@ -172,6 +175,15 @@
   #next {
     right: 0;
     border-left: 2px solid #555;
+  }
+
+  .valign {
+    position: absolute;
+    top: 50%;
+    margin-top: -15px;
+    text-align: center;
+    width: 100%;
+    pointer-events: none;
   }
 </style>
 
@@ -233,19 +245,19 @@
         this.postMsg(this.views.present, "GET_NOTES");
         this.idx = ~~cursor[0];
         this.step = ~~cursor[1];
-        $("#slideidx").innerHTML = argv[1];
+        fjq("#slideidx").innerHTML = argv[1];
         //this.postMsg(this.views.future, "SET_CURSOR", this.idx + "." + (this.step + 1));
         if (this.views.remote)
           this.postMsg(this.views.remote, "SET_CURSOR", argv[1]);
       } else {
-        $("#totalslidecount").innerHTML = +argv[1] < 0 ? "END" : argv[1];
+        fjq("#totalslidecount").innerHTML = +argv[1] < 0 ? "END" : argv[1];
       }
     }
     if (aEvent.source === this.views.present) {
       if (argv[0] === "NOTES" && argc === 2)
-        $("#notes > #content").innerHTML = this.notes = argv[1];
+        fjq("#notes > #content").innerHTML = this.notes = argv[1];
       if (argv[0] === "REGISTERED" && argc === 3)
-        $("#totalslidecount").innerHTML = argv[2];
+        fjq("#totalslidecount").innerHTML = argv[2];
     }
   }
   
@@ -257,8 +269,8 @@
   }
   
   Dz.loadIframes = function() {
-    var present = $("#present iframe");
-    //var future = $("#future iframe");
+    var present = fjq("#present iframe");
+    //var future = fjq("#future iframe");
     this.url = this.getUrl();
     present.src = /*future.src =*/ this.url + '?autoplay=0';
     present.onload = /*future.onload =*/ function() {
@@ -317,9 +329,9 @@
     }
     setInterval(function() {
       var now = new Date();
-      $("#hours").innerHTML = addZero(now.getHours());
-      $("#minutes").innerHTML = addZero(now.getMinutes());
-      $("#seconds").innerHTML = addZero(now.getSeconds());
+      fjq("#hours").innerHTML = addZero(now.getHours());
+      fjq("#minutes").innerHTML = addZero(now.getMinutes());
+      fjq("#seconds").innerHTML = addZero(now.getSeconds());
     }, 1000);
   }
 
@@ -328,6 +340,16 @@
     window.onkeydown = Dz.onkeydown.bind(Dz);
     window.onhashchange = Dz.loadIframes.bind(Dz);
     window.onmessage = Dz.onmessage.bind(Dz);
+
+    var touchsupported = ('ontouchstart' in window);
+    var bindTo = (touchsupported ? 'touchstart' : 'click');
+    $('#back').on(bindTo, function(e) {
+      Dz.back();
+    });
+
+    $('#next').on(bindTo, function(e) {
+      Dz.forward();
+    });
   }
 
   window.onload = init;
@@ -360,11 +382,11 @@
     };
   }
 
-  var $ = (HTMLElement.prototype.$ = function(aQuery) {
+  var fjq = (HTMLElement.prototype.fjq = function(aQuery) {
     return this.querySelector(aQuery);
   }).bind(document);
 
-  var $$ = (HTMLElement.prototype.$$ = function(aQuery) {
+  var fjqa = (HTMLElement.prototype.fjqa = function(aQuery) {
     return this.querySelectorAll(aQuery);
   }).bind(document);
 

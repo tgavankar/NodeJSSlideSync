@@ -4,12 +4,17 @@
       $('.delete').click(function(e) {
         e.preventDefault();
         $.post('/delete/' + $(this).data("id"), {_csrf: '<%= token %>'}, function(data, status) { $(this).parent().hide(); }.bind(this));
-      })
+      });
+
+      $('.qrcode').click(function(e) {
+        e.preventDefault();
+        window.open('http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl='+encodeURIComponent(location.host + '/present/' + $(this).data("id")),'Qr%20code','top=100,left=200,width=350,height=350,status=yes');
+      });
     });
   </script>
     <ul>
     <% for(pres in preslist) { %>
-      <li><%= preslist[pres].title %> [<%= preslist[pres].type %>] (<%- link_to("View", "/view/" + preslist[pres].shortid) %>) (<%- link_to("Present", "/present/" + preslist[pres].shortid) %>) (<%- link_to("Edit", "/edit/" + preslist[pres].shortid) %>) (<a href="#" class="delete" data-id="<%= preslist[pres].shortid %>">Delete</a>)</li>
+      <li><%= preslist[pres].title %> [<%= preslist[pres].type %>] (<%- link_to("View", "/view/" + preslist[pres].shortid) %>) (<%- link_to("Present", "/present/" + preslist[pres].shortid) %>) (<%- link_to("Edit", "/edit/" + preslist[pres].shortid) %>) (<a href="#" class="delete" data-id="<%= preslist[pres].shortid %>">Delete</a>) (<a href="#" class="qrcode" data-id="<%= preslist[pres].shortid %>">Transfer Presenter to phone</a>)</li>
     <% } %>
     </ul>
 <%- include parts/bottom.ejs %>

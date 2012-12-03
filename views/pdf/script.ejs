@@ -66,7 +66,7 @@ PdfJs.forward = function() {
 }
 
 PdfJs.setPage = function(newPage) {
-	window.location.hash = "#" + newPage;
+	this.updateHash(newPage);
 }
 
 PdfJs.onMessage = function(aEvent) {
@@ -84,9 +84,19 @@ PdfJs.onMessage = function(aEvent) {
     if (argv[0] === "FORWARD" && argc === 1)
       this.forward();
 	if (argv[0] === "SET_CURSOR" && argc === 2)
-		window.location.hash = "#" + argv[1];
+		this.updateHash(argv[1]);
 	if (argv[0] === "GET_CURSOR" && argc === 1)
 		this.postMsg(win, "CURSOR", this.idx);
+}
+
+PdfJs.updateHash = function(str) {
+	if(window.history.replaceState) {
+		window.history.replaceState({}, "", "#" + str);
+		$(window).trigger('hashchange');
+	}
+	else {
+		window.location.hash = "#" + str;
+	}
 }
 
 PdfJs.postMsg = function(aWin, aMsg) {

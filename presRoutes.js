@@ -10,7 +10,7 @@ var csrf = require('./middleware/csrf');
 
 module.exports = function (app) {
     
-    app.get('/view/:id', function(req, res) {
+    app.get('/view/:id', csrf, function(req, res) {
         Presentation.findOne({shortid: req.params.id}, function(err, doc) {
             if(err) {
                 res.send("error");
@@ -39,7 +39,7 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/praw/:id', ensureAuthenticated, function(req, res) {
+    app.get('/praw/:id', ensureAuthenticated, csrf, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
                 res.send("error");
@@ -67,7 +67,7 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/present/:id', ensureAuthenticated, function(req, res) {
+    app.get('/present/:id', ensureAuthenticated, csrf, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
                 res.send("error");

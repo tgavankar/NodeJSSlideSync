@@ -26,7 +26,10 @@ SlideSyncViewer.prototype.init = function() {
 
     $("#follower").show();
 
-    $("#follower").click(function() {
+    var touchsupported = ('ontouchstart' in window);
+    var bindTo = (touchsupported ? 'touchstart' : 'click');
+
+    $("#follower").on(bindTo, function() {
         this.follow = !this.follow;
         if(this.follow) {
             $("#follower").text("Stop Following");
