@@ -5,6 +5,7 @@
 <script src="/lib/jquery-1.8.2.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <span id="presId" style="display: none;"><%= presId %></span>
+<span id="presType" style="display: none;"><%= presType %></span>
 
 
 <div id="follower">Stop Following</div>
@@ -24,6 +25,7 @@
     border-radius: 12px;
     font-family: 'Oswald', arial, serif;
     z-index: 10;
+    text-shadow: 1px 1px 0 #FFF;
   }
 
   #follower:hover {
@@ -32,7 +34,7 @@
   }
 </style>
 
-<% if(presType === "dz") { %>
+<% if(presType === "dzslide") { %>
   <style>
     <%- css %>
   </style>

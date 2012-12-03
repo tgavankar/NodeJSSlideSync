@@ -18,7 +18,7 @@ SlideSyncPresenter.prototype.init = function() {
 SlideSyncPresenter.prototype.initHandlers = function() {
     this.socket.on('connect', this.registerRedis.bind(this));
     
-    function decorate(callback, pres) {
+    function decorate(callback, toBind, pres) {
         return function(aWin, aMsg) {
             if(aWin === window && arguments.length > 1 && ["CURSOR", "FORWARD", "BACK", "START", "END"].indexOf(arguments[1]) > -1) {
                 aMsg = [aMsg];
@@ -27,11 +27,17 @@ SlideSyncPresenter.prototype.initHandlers = function() {
                 var data = {cmd: aMsg.join(" "), presId: $("#presId").text(), key: pres.key};
                 pres.socket.emit('send', data);
             }
-            callback.apply(Dz, arguments);
+            console.log('aaa');
+            callback.apply(toBind, arguments);
         }
     }
 
-    Dz.postMsg = decorate(Dz.postMsg, this);
+    if($("#presType").text() === "dzslide") {
+        Dz.postMsg = decorate(Dz.postMsg, Dz, this);
+    }
+    else if($("#presType").text() === "pdf") {
+        PdfJs.postMsg = decorate(PdfJs.postMsg, PdfJs, this);
+    }
 }
 
 SlideSyncPresenter.prototype.registerRedis = function() {

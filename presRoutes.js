@@ -19,10 +19,10 @@ module.exports = function (app) {
             }
             else {
                 if(doc.type === "dzslides") {
-                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, presType: 'dz', jsfile: 'viewer.js'});
+                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, presType: doc.type, jsfile: 'viewer.js'});
                 }
                 else if(doc.type === "pdf") {
-                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, presType: 'pdf', jsfile: 'viewer.js'});   
+                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, presType: doc.type, jsfile: 'viewer.js'});   
                 }
             }
         });
@@ -37,7 +37,13 @@ module.exports = function (app) {
                 res.send("id not found");
             }
             else {
-                res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, presType: 'dz', jsfile: 'presenter.js'});
+                if(doc.type === "dzslides") {
+                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css, presType: doc.type, jsfile: 'presenter.js'});    
+                }
+                else if(doc.type === "pdf") {
+                    res.render('view.ejs', {user: req.user, title: doc.title, presId: doc.shortid, presType: doc.type, jsfile: 'presenter.js'});
+                }
+                
             }
         });
     });
@@ -51,7 +57,12 @@ module.exports = function (app) {
                 res.send("Not found");
             }
             else {
-                res.render('present.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css});
+                if(doc.type === "dzslides") {
+                    res.render('present.ejs', {user: req.user, title: doc.title, presId: doc.shortid, html: doc.content.html, css: doc.content.css});
+                }
+                else if(doc.type === "pdf") {
+                    res.render('present.ejs', {user: req.user, title: doc.title, presId: doc.shortid, presType: doc.type})
+                }
             }
         });
     });
