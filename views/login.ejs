@@ -3,6 +3,10 @@
         $(document).ready(function(){
             $('#login').submit(function(e) {
                 e.preventDefault();
+
+                $('.ajaxloader').show();
+                $('#loginButton', this).prop('disabled', true);
+
                 var username = $('#loginUsername').val();
                 var password = $('#loginPassword').val();
 
@@ -13,17 +17,19 @@
                 function error(xhr, status, err){
                     console.log(xhr);
                     alert(JSON.stringify(err));
+                    $('.ajaxloader').hide();
+                    $('#loginButton', this).prop('disabled', false);
                 }
 
                 $(this).ajaxSubmit({
                     success: success,
-                    error: error
+                    error: error.bind(this)
                 });
             });
         });
     </script>
 
-    <h2>Login</h2>
+    <h1>Login</h1>
     <form id="login" action="/login" method="POST">
         <input type="hidden" name="_csrf" value="<%= token %>" />
         <div>
@@ -37,6 +43,7 @@
             </div>
             <div>
                 <button id="loginButton"> Login </button>
+                <div class="ajaxloader"></div>
             </div>
         </div>
     </form>

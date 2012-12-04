@@ -3,6 +3,10 @@
         $(document).ready(function(){
             $('#register').submit(function(e) {
                 e.preventDefault();
+                
+                $('.ajaxloader').show();
+                $('#registerButton', this).prop('disabled', true);
+
                 var username = $('#regUsername').val();
                 var password = $('#regPassword').val();
 
@@ -12,12 +16,14 @@
 
                 function error(xhr, status, err){
                     alert(JSON.stringify(err));
+                    $('.ajaxloader').hide();
+                    $('#registerButton', this).prop('disabled', false);
                 }
 
                 if(password === $("#regPasswordConf").val()) {
                     $(this).ajaxSubmit({
                         success: success,
-                        error: error
+                        error: error.bind(this)
                     });
                 }
                 else {
@@ -45,6 +51,7 @@
             </div>
             <div>
                 <button id="registerButton"> Register </button>
+                <div class="ajaxloader"></div>
             </div>
         </form>
     </div>

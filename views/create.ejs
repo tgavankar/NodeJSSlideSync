@@ -6,6 +6,9 @@
             $('#save').submit(function(e) {
                 e.preventDefault();
 
+                $('.ajaxloader').show();
+                $('#saveButton', this).prop('disabled', true);
+
                 function success(data){
                     console.log(arguments);
                     alert(JSON.stringify(data));
@@ -13,11 +16,13 @@
 
                 function error(xhr, status, err){
                     alert(JSON.stringify(err));
+                    $('.ajaxloader').hide();
+                    $('#registerButton', this).prop('disabled', false);
                 }
 
                 $(this).ajaxSubmit( {
                     error: error,
-                    success: success
+                    success: success.bind(this)
                 });
             });
 
@@ -67,6 +72,7 @@
             </div>
             <div>
                 <button id="saveButton"> Save </button>
+                <div class="ajaxloader"></div>
             </div>
         </form>
     </div>
