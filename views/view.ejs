@@ -38,7 +38,7 @@
 
 <% if(presType === "dzslides") { %>
   <style>
-    <%- css %>
+    <%- sanitize_css(css) %>
   </style>
   <%- html %>
   <%- include dzslides/view.ejs %>

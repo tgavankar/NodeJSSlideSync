@@ -35,10 +35,10 @@
       </thead>
       <tbody>
         <% for(pres in preslist) { %>
-          <tr>
-            <td><% if(preslist[pres].title) { %><%= preslist[pres].title %><% } else { %>None<% } %></td>
-            <td><% if(preslist[pres].desc) { %><%= preslist[pres].desc %><% } else { %>None<% } %></td>
-            <td><%= preslist[pres].type %></td>
+          <tr id="<%= preslist[pres].shortid %>">
+            <td><a href="#<%= preslist[pres].shortid %>"><% if(preslist[pres].title) { %><%= strip_tags(preslist[pres].title) %><% } else { %>None<% } %></a></td>
+            <td><% if(preslist[pres].desc) { %><%= strip_tags(preslist[pres].desc) %><% } else { %>None<% } %></td>
+            <td><%= strip_tags(preslist[pres].type) %></td>
             <td><%= preslist[pres].createdTimestamp %></td>
             <td><%= preslist[pres].modifiedTimestamp %></td>
             <td>

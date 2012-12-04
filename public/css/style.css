@@ -349,6 +349,19 @@ td:nth-of-type(9) { text-align: center; }
 			padding-left: 50%; 
 			padding-right: 6px;
 		}
+
+		tr:target td {
+			display: block;
+		}
+
+		td:nth-of-type(2) { display: none; }
+		td:nth-of-type(3) { display: none; }
+		td:nth-of-type(4) { display: none; }
+		td:nth-of-type(5) { display: none; }
+		td:nth-of-type(6) { display: none; }
+		td:nth-of-type(7) { display: none; }
+		td:nth-of-type(8) { display: none; }
+		td:nth-of-type(9) { display: none; }
 		
 		td:before { 
 			/* Now like a table header */
