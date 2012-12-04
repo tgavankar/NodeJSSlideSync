@@ -161,7 +161,7 @@ h3 {
 	padding-left: 15px;
 }
 
-input, button {
+input, button, select, textarea {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	
@@ -175,7 +175,7 @@ input, button {
 	-webkit-box-sizing: border-box;
 }
 
-input {
+input, textarea {
 	 -webkit-box-shadow: 
       inset 0 0 4px  rgba(0,0,0,0.5),
       inset      0 0 8px rgba(0,0,0,0.5); 
@@ -197,7 +197,7 @@ input {
 	padding-right: 10px;
 }
 
-button {
+button, select {
 	 -webkit-box-shadow: 
       0 0 4px  rgba(0,0,0,0.5),
             0 0 8px rgba(0,0,0,0.5); 
@@ -269,7 +269,7 @@ input:focus {
 /*media queries*/
 
 @media only screen and (min-width: 768px) {
-	input, button {
+	input, button, select {
 		width: auto;
 	}
 

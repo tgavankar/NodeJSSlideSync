@@ -42,11 +42,11 @@
         <form id="save" action="<%= action %>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="<%= token %>" />
             <div>
-                <label> Title </label>
+                <label> Title: </label>
                 <input id="title" name="title" value="<%= title %>" />
             </div>
             <div>
-                <label> Description </label>
+                <label> Description: </label>
                 <input id="desc" name="desc" value="<%= desc %>" />
             </div>
             <div>
@@ -58,16 +58,16 @@
             </div>
             <div id="dzslides">
                 <div>
-                    <label> HTML (dzSlides) </label>
-                    <textarea id="html" name="html"><%= html %></textarea>
+                    <label> HTML (dzSlides): </label>
+                    <textarea id="html" name="html" rows="6"><%= html %></textarea>
                 </div>
                 <div>
-                    <label> CSS (dzSlides) </label>
-                    <textarea id="css" name="css"><%= css %></textarea>
+                    <label> CSS (dzSlides): </label>
+                    <textarea id="css" name="css" rows="6"><%= css %></textarea>
                 </div>
             </div>
             <div id="pdfslides">
-                <label> PDF File </label>
+                <label> PDF File: </label>
                 <input type="file" id="pdffile" name="pdfFile" />
             </div>
             <div>
