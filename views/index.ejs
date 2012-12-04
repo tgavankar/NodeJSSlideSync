@@ -1,14 +1,17 @@
 <%- include parts/top.ejs %> 
-			
-<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas et tortor tellus, semper bibendum purus. Mauris vel odio nec orci condimentum lobortis. Morbi metus felis, semper ut volutpat quis, malesuada sed nisl. Nulla id dui velit. Pellentesque a neque leo. Vestibulum convallis rutrum leo, convallis egestas arcu consectetur at. Aliquam tempor erat et lacus lobortis pretium. In lobortis luctus nibh eget sollicitudin. Proin laoreet, dui non aliquet dignissim, ipsum leo semper dolor, suscipit posuere ipsum nisi eu ipsum. Quisque egestas ornare mi, ac imperdiet odio venenatis a. Sed quis rutrum sem. Donec sem justo, dapibus sed dignissim a, sollicitudin non turpis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed at augue sed sem varius condimentum eget a metus. Sed vitae massa augue. Nulla non eros ut nunc tempus egestas non sit amet eros.</p>
-<p>
-Vestibulum ligula enim, tincidunt sit amet varius eget, mattis at risus. Vestibulum et eros lorem. Praesent vestibulum tortor sed dolor pulvinar ac suscipit diam consequat. Vestibulum et lacus vitae augue varius porttitor ut vel tellus. Duis in nibh suscipit orci egestas malesuada vulputate quis magna. Duis commodo, mauris et gravida elementum, ipsum est condimentum orci, nec eleifend orci nibh ut tellus. Sed a lacus scelerisque neque mollis facilisis varius scelerisque nunc. In euismod hendrerit quam in ornare.
-</p><p>
-Suspendisse vel fermentum tortor. Mauris rutrum congue viverra. Nam adipiscing dui ornare leo posuere adipiscing. Donec risus erat, blandit vel vulputate nec, ultrices eget turpis. Ut non felis libero. Phasellus iaculis sapien in metus tempus sed euismod tellus sodales. Morbi mollis accumsan augue eget luctus.
-</p><p>
-Donec dignissim convallis erat eget semper. Duis facilisis cursus ullamcorper. Duis malesuada eros ac risus tempor et gravida felis tincidunt. Phasellus laoreet dolor at diam porta luctus. Etiam dolor metus, molestie id suscipit in, ultrices eu enim. Vivamus consequat metus sit amet odio egestas eget consectetur turpis rutrum. Praesent eleifend placerat sem ac ultricies. Suspendisse eu tortor quam, quis elementum lectus. Aliquam porta fringilla scelerisque. Curabitur viverra felis eu diam aliquet id facilisis lorem hendrerit. Pellentesque molestie hendrerit lacus, ac mattis neque semper at. Curabitur egestas auctor turpis, sed lobortis massa bibendum vitae. Etiam sed augue non massa malesuada cursus et sit amet justo.
-</p><p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed justo et eros pharetra fermentum. Nam eu mollis tortor. Nulla laoreet pulvinar dapibus. Pellentesque lectus ante, auctor vel ultricies molestie, tincidunt vitae risus. Praesent a est augue, et rhoncus nunc. Vestibulum sit amet dignissim nisl. Ut tempus metus non diam molestie dapibus. Donec eleifend facilisis odio, a tempor dolor dictum at. </p>
+	
+<h1>Introducing, SlideSync!</h1>
+
+<h2>What is it?</h2>
+<h3>SlideSync is a platform for syncing a presentation across multiple platforms and viewers.</h3>
+
+<h2>How do I use it?</h2>
+<h3>One way is to make your presentation with the tool of your choice (PowerPoint, KeyNote, etc), export to PDF, and simply upload the PDF to SlideSync. Or, if you prefer more control, you can make your presentation in pure HTML5/CSS3 using the awesome library <a href="http://paulrouget.com/dzslides/">dzSlides</a>. Then, we'll take care of the rest!</a></h3>
+
+<% if(!user) { %>
+<h2>Well, what're you waiting for? <a href="/login">Login</a> or <a href="/register">Register</a> now!</h2>
+<% } else { %>
+<h2>Make a <a href="/create">new presentation</a> or look at your <a href="/list">other presentations</a>.
+<% } %>
 
 <%- include parts/bottom.ejs %>

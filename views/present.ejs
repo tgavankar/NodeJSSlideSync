@@ -7,6 +7,7 @@
 <span id="csrf" style="display: none;"><%= token %></span>
 
 <script src="/lib/jquery-1.8.2.min.js"></script>
+<script src="/lib/jgestures.min.js"></script>
 
 <div id="present">
   <iframe></iframe>
@@ -341,13 +342,11 @@
     window.onhashchange = Dz.loadIframes.bind(Dz);
     window.onmessage = Dz.onmessage.bind(Dz);
 
-    var touchsupported = ('ontouchstart' in window);
-    var bindTo = (touchsupported ? 'touchstart' : 'click');
-    $('#back').on(bindTo, function(e) {
+    $('#back').on('tapone', function(e) {
       Dz.back();
     });
 
-    $('#next').on(bindTo, function(e) {
+    $('#next').on('tapone', function(e) {
       Dz.forward();
     });
   }
