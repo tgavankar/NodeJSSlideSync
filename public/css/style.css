@@ -92,7 +92,7 @@ h1.logo a {
 	font-size: 30px;
 }
 
-a.to_nav {
+a.to_nav, #primary_nav a.to_top {
 	float: right;
 	color: #fff;
 	background: #4e4e4e;
@@ -107,6 +107,7 @@ a.to_nav {
 	border-radius: 2px;
 	position: relative;
 	top: 5px;
+	text-transform: capitalize;
 }
 
 a.to_nav:hover,
@@ -123,7 +124,7 @@ a.to_nav:focus {
 	padding: 5px 0;
 }
 
-#primary_nav li a {
+#primary_nav li a, #primary_nav li.top {
 	display: block;
 	padding: 0 20px;
 	color: #fff;

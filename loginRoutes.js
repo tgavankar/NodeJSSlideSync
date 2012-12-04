@@ -1,6 +1,8 @@
 var passport = require('passport');
 var User = require('./models/User');
 var csrf = require('./middleware/csrf');
+var validate = require('validator').check;
+var sanitize = require('validator').sanitize;
 
 module.exports = function (app) {
     
@@ -46,9 +48,11 @@ module.exports = function (app) {
                 return res.send({'err': err});
             }
             if (existingUser) {
-                return res.send('user exists');
+                return res.send({'err': 'user exists'});
             }
-
+            if (!validate(req.body.username).isAlphanumeric()) {
+                return res.send({'err': 'invalid username'});
+            }
             var user = new User({ username : req.body.username });
             user.registeredTimestamp = new Date();
             user.setPassword(req.body.password, function(err) {

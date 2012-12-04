@@ -4,7 +4,7 @@
       $('.delete').on('tapone', function(e) {
         e.preventDefault();
         if(confirm("Are you sure you wish to delete " + $(this).data("title") + "? It cannot be undone.")) {
-          $.post('/delete/' + $(this).data("id"), {_csrf: '<%= token %>'}, function(data, status) { $(this).parent().hide(); }.bind(this));
+          $.post('/delete/' + $(this).data("id"), {_csrf: '<%= token %>'}, function(data, status) { $(this).parent().parent().hide(); }.bind(this));
         }
       });
 

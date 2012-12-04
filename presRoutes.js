@@ -7,6 +7,7 @@ var Presentation = require('./models/Presentation');
 var ensureAuthenticated = require('./middleware/ensureAuthenticated');
 var _ = require('underscore');
 var csrf = require('./middleware/csrf');
+var sanitize = require('validator').sanitize;
 
 module.exports = function (app) {
     
@@ -110,15 +111,15 @@ module.exports = function (app) {
                 }
 
                 var pres = new Presentation({shortid: shortid});
-                pres.title = req.body.title;
-                pres.desc = req.body.desc;
+                pres.title = sanitize(req.body.title).xss(true);
+                pres.desc = sanitize(req.body.desc).xss(true);
                 pres.createdTimestamp = new Date();
                 pres.modifiedTimestamp = new Date();
-                pres.type = req.body.type;
+                pres.type = sanitize(req.body.type).xss(true);
                 pres._creator = req.user;
 
                 if(req.body.type === "dzslides") {
-                    pres.content = {html: req.body.html, css: req.body.css};
+                    pres.content = {html: sanitize(req.body.html).xss(true), css: sanitize(req.body.css).xss(true)};
                 }
                 else if(req.body.type === "pdf") {
                     var destPath = path.join(__dirname, 'public', 'upload', shortid + '.pdf');
@@ -176,12 +177,12 @@ module.exports = function (app) {
                 res.send("Not found");
             }
             else {
-                doc.title = req.body.title;
-                doc.desc = req.body.desc;
+                doc.title = sanitize(req.body.title).xss(true);
+                doc.desc = sanitize(req.body.desc).xss(true);
                 doc.modifiedTimestamp = new Date();
 
                 if(req.body.type === "dzslides") {
-                    doc.content = {html: req.body.html, css: req.body.css};
+                    doc.content = {html: sanitize(req.body.html).xss(true), css: sanitize(req.body.css).xss(true)};
                 }
                 else if(req.body.type === "pdf") {
                     var destPath = path.join(__dirname, 'public', 'upload', doc.shortid + '.pdf');
