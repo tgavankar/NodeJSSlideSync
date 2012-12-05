@@ -18,7 +18,6 @@ SlideSyncViewer.prototype.init = function() {
 
     // When getting a "receive" event from the server
     this.socket.on('receive', function(data) {
-        console.log("recv: " + JSON.stringify(data));
         if(this.follow) {
             window.nativePostMessage(data, "*");
         }

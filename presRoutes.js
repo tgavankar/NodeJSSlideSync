@@ -12,10 +12,10 @@ module.exports = function (app) {
     app.get('/view/:id', function(req, res) {
         Presentation.findOne({shortid: req.params.id}, function(err, doc) {
             if(err) {
-                res.send("error");
+                res.status(400).send(err);
             }
             else if(!doc) {
-                res.send("id not found");
+                res.status(404).render('404.ejs');
             }
             else {
                 if(doc.type === "dzslides") {
@@ -32,7 +32,7 @@ module.exports = function (app) {
                                             title: doc.title, 
                                             presId: doc.shortid, 
                                             presType: doc.type, 
-                                            jsfile: 'viewer.js'});   
+                                            jsfile: 'viewer.js'});
                 }
             }
         });
@@ -41,10 +41,10 @@ module.exports = function (app) {
     app.get('/praw/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
-                res.send("error");
+                res.status(400).send(e);
             }
             else if(!doc) {
-                res.send("id not found");
+                res.status(404).render('404.ejs');
             }
             else {
                 if(doc.type === "dzslides") {
@@ -69,10 +69,10 @@ module.exports = function (app) {
     app.get('/present/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
-                res.send("error");
+                res.status(400).send(err);
             }
             else if(!doc) {
-                res.send("Not found");
+                res.status(404).render('404.ejs');
             }
             else {
                 if(doc.type === "dzslides") {
@@ -89,7 +89,6 @@ module.exports = function (app) {
         var presentations = Presentation.find({_creator: req.user}, function(err, docs) {
             res.render('list.ejs', {preslist: docs});
         });
-        
     });
 
     app.get('/create', ensureAuthenticated, function(req, res) {
@@ -101,8 +100,8 @@ module.exports = function (app) {
             var shortid = Math.random().toString(36).substring(2, 7); // Random 5 chars
 
             Presentation.findOne({shortid : shortid }, function(err, exists) {
-                if (err){
-                    return {err: err};
+                if (err) {
+                    return {success: false, text: err};
                 }
                 if (exists) {
                     return makePres();
@@ -131,29 +130,36 @@ module.exports = function (app) {
                     pres.content = {path: shortid + '.pdf'};
                 }
                 else {
-                    return {err: 'Invalid type'};
+                    return {success: false, text: 'Invalid type'};
                 }
 
                 
                 pres.save(function(err) {
                     if(err) {
-                        return {err: err};
+                        return { success: false, err: err };
                     }
-                    return shortid;
+                    return { success: true, text: shortid };
                 });
             });
         }
 
-        res.send(makePres());
+        var output = makePres();
+
+        if(output.success) {
+            res.send(output.text);
+        }
+        else {
+            res.status(400).send(output.text);
+        }
     });
 
     app.get('/edit/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
-                res.send("error");
+                res.status(400).send(err);
             }
             else if(!doc) {
-                res.send("Not found");
+                res.status(404).render('404.ejs');
             }
             else {
                 if(doc.type === "dzslides") {
@@ -169,10 +175,10 @@ module.exports = function (app) {
     app.post('/edit/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
-                res.send("error");
+                res.status(400).send(err);
             }
             else if(!doc) {
-                res.send("Not found");
+                res.status(404).render('404.ejs');
             }
             else {
                 doc.title = sanitize(req.body.title).xss();
@@ -196,7 +202,7 @@ module.exports = function (app) {
                 doc.type = req.body.type;
                 doc.save(function(err) {
                     if(err) {
-                        res.send('error');
+                        res.status(400).send(err);
                     }
                     else {
                         res.send(doc.shortid);
@@ -210,10 +216,10 @@ module.exports = function (app) {
     app.post('/delete/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
-                res.send("error");
+                res.status(400).send(err);
             }
             else if(!doc) {
-                res.send("Not found");
+                res.status(404).render('404.ejs');
             }
             else {
                 if(req.body.type === "pdf") {
@@ -222,10 +228,9 @@ module.exports = function (app) {
 
                 doc.remove();
 
-                res.send('success');
-                return;
+                return res.send('Successfully deleted.');
             }
-            res.send('error');
+            return res.status(400).send('An unexpected error has occurred.');
         });
     });
 }

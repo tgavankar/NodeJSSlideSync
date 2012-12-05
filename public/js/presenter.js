@@ -25,7 +25,6 @@ SlideSyncPresenter.prototype.initHandlers = function() {
                 for (var i = 2; i < arguments.length; i++)
                   aMsg.push(encodeURIComponent(arguments[i]));
                 var data = {cmd: aMsg.join(" "), presId: $("#presId").text(), key: pres.key};
-                console.log('send: ' + JSON.stringify(data));
                 pres.socket.emit('send', data);
             }
             callback.apply(toBind, arguments);
@@ -46,9 +45,21 @@ SlideSyncPresenter.prototype.registerRedis = function() {
         this.key = data.key;
     }.bind(this);
 
-    function error(xhr, status, err){
-        alert(JSON.stringify(err));
-    }
+    var error = function(xhr, status, err){
+        switch(err) {
+            case "Bad Request":
+                alert(xhr.responseText); 
+                break;
+            case "Unauthorized":
+                window.location.href = "/login";
+                break;
+            case "Forbidden":
+                alert("Session has expired. Please refresh to regain control of viewers.");
+                break;
+            default:
+                alert("An unexpected error has occured.");
+        }
+    }.bind(this);
 
     $.ajax({
         url: '/redis/regpub',

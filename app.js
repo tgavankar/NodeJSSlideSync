@@ -48,6 +48,11 @@ function configureExpress(app){
 
         app.set('views', path.join(__dirname, 'views'));
         app.set('view engine', 'ejs');
+
+        // Handle 404
+        app.use(function(req, res) {
+            res.render('404.ejs');
+        })
     });
 }
 
