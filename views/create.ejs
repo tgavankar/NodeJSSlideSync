@@ -10,14 +10,26 @@
                 $('#saveButton', this).prop('disabled', true);
 
                 function success(data){
-                    console.log(arguments);
-                    alert(JSON.stringify(data));
+                    $('.succmsg').text("Entry saved!");
                 }
 
                 function error(xhr, status, err){
-                    alert(JSON.stringify(err));
+                    switch(err) {
+                        case "Bad Request":
+                            $('.errmsg').text(xhr.responseText);
+                            break;
+                        case "Unauthorized":
+                            $('.errmsg').text("Unauthorized.");
+                            break;
+                        case "Forbidden":
+                            $('.errmsg').text("Session has expired. Please refresh.");
+                            break;
+                        default:
+                            $('.errmsg').text("An unexpected error has occured.");
+                    }
+
                     $('.ajaxloader').hide();
-                    $('#registerButton', this).prop('disabled', false);
+                    $('#loginButton', this).prop('disabled', false);
                 }
 
                 $(this).ajaxSubmit( {
@@ -41,6 +53,7 @@
     <div>
         <form id="save" action="<%= action %>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="<%= token %>" />
+            <div class="errmsg"></div>
             <div>
                 <label> Title: </label>
                 <input id="title" name="title" value="<%= title %>" />

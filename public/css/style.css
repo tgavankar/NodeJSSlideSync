@@ -283,6 +283,11 @@ input:focus {
 	font-weight: bold;
 }
 
+.succmsg {
+	color: #13AEFF;
+	font-weight: bold;
+}
+
 /*media queries*/
 
 @media only screen and (min-width: 768px) {

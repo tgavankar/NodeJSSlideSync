@@ -133,7 +133,6 @@ module.exports = function (app) {
                     return {success: false, text: 'Invalid type'};
                 }
 
-                
                 pres.save(function(err) {
                     if(err) {
                         return { success: false, err: err };
@@ -178,7 +177,7 @@ module.exports = function (app) {
                 res.status(400).send(err);
             }
             else if(!doc) {
-                res.status(404).render('404.ejs');
+                res.status(400).send('Invalid ID');
             }
             else {
                 doc.title = sanitize(req.body.title).xss();
