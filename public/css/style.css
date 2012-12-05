@@ -1,9 +1,11 @@
 @import url(http://fonts.googleapis.com/css?family=Droid+Sans);
 
+/* General body CSS */
+
 html, body {
-  font: 14px "Droid Sans", sans-serif;
-  background-color: #828282;
-  height: 100%;
+	font: 14px "Droid Sans", sans-serif;
+	background-color: #828282;
+	height: 100%;
 }
 
 .wrapper {
@@ -11,19 +13,6 @@ html, body {
 	margin-right: auto;
 	min-height: 100%;
 	background-color: #EEEEEE;
-}
-
-#logo1, #logo2 {
-	font-size: 30px;
-	font-family: 'Droid Sans', sans-serif;
-}
-
-#logo1 {
-}
-
-#logo2 {
-	color: #13AEFF;
-	margin-left: -9px;
 }
 
 #content {
@@ -35,16 +24,14 @@ html, body {
 }
 
 a {
-  color: #1fd1ff;
+	color: #1fd1ff;
 }
 
 a:hover {
 	color: #13aeff;
 }
 
-
-/****************/
-
+/* Header CSS */
 
 header {
 	background: #313131;
@@ -57,20 +44,24 @@ header {
 	-webkit-box-shadow:inset 0 0 5px #000000;
 }
 
-/*shorter clearfix http://nicolasgallagher.com/micro-clearfix-hack/*/
+#logo1, #logo2 {
+	font-size: 30px;
+	font-family: 'Droid Sans', sans-serif;
+}
+
+#logo2 {
+	color: #13AEFF;
+	margin-left: -9px;
+}
+
 header:before,
 header:after {
-    content:"";
-    display:table;
+	content: "";
+	display: table;
 }
 
 header:after {
-    clear:both;
-}
-
-/* For IE 6/7 (trigger hasLayout) */
-header {
-    zoom:1;
+	clear: both;
 }
 
 footer {
@@ -92,7 +83,11 @@ h1.logo a {
 	font-size: 30px;
 }
 
-a.to_nav, #primary_nav a.to_top {
+
+/* Navbar CSS */
+
+#navbar a.to_top,
+a.to_nav {
 	float: right;
 	color: #fff;
 	background: #4e4e4e;
@@ -115,16 +110,15 @@ a.to_nav:focus {
 	color: #313131;
 	background: #ccc;
 }
-	
-/*navigation*/	
 
-#primary_nav ul {
+#navbar ul {
 	list-style: none;
 	background: #313131;
 	padding: 5px 0;
 }
 
-#primary_nav li a, #primary_nav li.top {
+#navbar li a,
+#navbar li.top {
 	display: block;
 	padding: 0 20px;
 	color: #fff;
@@ -136,56 +130,61 @@ a.to_nav:focus {
 	border-bottom: 1px solid #383838;
 }
 
-#primary_nav li:last-child a {
+#navbar li:last-child a {
 	border-bottom: none;
 }
 
-#primary_nav li a:hover,
-#primary_nav li a:focus,
-#primary_nav li a.currpage {
+#navbar li a:hover,
+#navbar li a:focus,
+#navbar li a.currpage {
 	color: #1c1c1c;
 	background: #13AEFF;
 }
 
-h1 {
+/* General content styles */
+
+#content h1 {
 	font-size: 24px;
 	text-align: center;
 	margin-bottom: 15px;
 }
 
-h2 {
+#content h2 {
 	font-size: 18px;
 	margin-top: 10px;
 }
 
-h3 {
+#content h3 {
 	padding-left: 15px;
 }
 
-input, button, select, textarea {
+#content input,
+#content button,
+#content select,
+#content textarea {
 	margin-top: 10px;
 	margin-bottom: 10px;
-	
 	border-radius: 10px;
 	border: 1px solid #13AEFF;
 	padding-top: 4px;
 	padding-bottom: 4px;
 	width: 100%;
-	box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-input, textarea {
-	 -webkit-box-shadow: 
-      inset 0 0 4px  rgba(0,0,0,0.5),
-      inset      0 0 8px rgba(0,0,0,0.5); 
-    -moz-box-shadow: 
-      inset 0 0 4px  rgba(0,0,0,0.5),
-      inset      0 0 8px rgba(0,0,0,0.5); 
-    box-shadow: 
-      inset 0 0 4px  rgba(0,0,0,0.5),
-      inset      0 0 8px rgba(0,0,0,0.5); 
+#content input,
+#content textarea {
+	-webkit-box-shadow:
+	inset 0 0 4px  rgba(0,0,0,0.5),
+	inset      0 0 8px rgba(0,0,0,0.5);
+	-moz-box-shadow:
+	inset 0 0 4px  rgba(0,0,0,0.5),
+	inset      0 0 8px rgba(0,0,0,0.5);
+	box-shadow:
+	inset 0 0 4px  rgba(0,0,0,0.5),
+	inset      0 0 8px rgba(0,0,0,0.5);
 
 	background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
@@ -198,17 +197,19 @@ input, textarea {
 	padding-right: 10px;
 }
 
-button, select {
-	 -webkit-box-shadow: 
-      0 0 4px  rgba(0,0,0,0.5),
-            0 0 8px rgba(0,0,0,0.5); 
-    -moz-box-shadow: 
-      0 0 4px  rgba(0,0,0,0.5),
-            0 0 8px rgba(0,0,0,0.5); 
-    box-shadow: 
-      0 0 4px  rgba(0,0,0,0.5),
-            0 0 8px rgba(0,0,0,0.5); 
+#content button,
+#content select {
+	-webkit-box-shadow:
+	0 0 4px  rgba(0,0,0,0.5),
+	0 0 8px rgba(0,0,0,0.5);
+	-moz-box-shadow:
+	0 0 4px  rgba(0,0,0,0.5),
+	0 0 8px rgba(0,0,0,0.5);
+	box-shadow:
+	0 0 4px  rgba(0,0,0,0.5),
+	0 0 8px rgba(0,0,0,0.5);
 
+	/* http://www.colorzilla.com/gradient-editor/ */
 	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(255,255,255,0))); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(255,255,255,0) 100%); /* Chrome10+,Safari5.1+ */
@@ -220,50 +221,19 @@ button, select {
 	cursor: pointer;
 }
 
-.ajaxloader {  
-    margin-left: auto;
-    margin-right: auto;
-    width: 30px;  
-    height: 30px;  
-    border: 8px solid #313131;  
-    border-right-color: transparent;  
-    border-radius: 50%;  
-    box-shadow: 0 0 25px 2px #eee;
-    display: none;
-    -moz-animation: spin 1s linear infinite; 
-    -webkit-animation: spin 1s linear infinite; 
-    animation: spin 1s linear infinite; 
-} 
 
-@-moz-keyframes spin {  
-    from { -moz-transform: rotate(0deg);   opacity: 0.2; }  
-    50%  { -moz-transform: rotate(180deg); opacity: 1.0; }  
-    to   { -moz-transform: rotate(360deg); opacity: 0.2; }  
-}
+#content button:active {
+	-webkit-box-shadow:
+	inset 0 0 4px  rgba(0,0,0,0.5),
+	inset      0 0 8px rgba(0,0,0,0.5);
+	-moz-box-shadow:
+	inset 0 0 4px  rgba(0,0,0,0.5),
+	inset      0 0 8px rgba(0,0,0,0.5);
+	box-shadow:
+	inset 0 0 4px  rgba(0,0,0,0.5),
+	inset      0 0 8px rgba(0,0,0,0.5);
 
-@-webkit-keyframes spin {  
-    from { -webkit-transform: rotate(0deg);   opacity: 0.2; }  
-    50%  { -webkit-transform: rotate(180deg); opacity: 1.0; }  
-    to   { -webkit-transform: rotate(360deg); opacity: 0.2; }  
-}
-
-@keyframes spin {  
-    from { transform: rotate(0deg);   opacity: 0.2; }  
-    50%  { transform: rotate(180deg); opacity: 1.0; }  
-    to   { transform: rotate(360deg); opacity: 0.2; }  
-}
-
-button:active {
-		 -webkit-box-shadow: 
-      inset 0 0 4px  rgba(0,0,0,0.5),
-      inset      0 0 8px rgba(0,0,0,0.5); 
-    -moz-box-shadow: 
-      inset 0 0 4px  rgba(0,0,0,0.5),
-      inset      0 0 8px rgba(0,0,0,0.5); 
-    box-shadow: 
-      inset 0 0 4px  rgba(0,0,0,0.5),
-      inset      0 0 8px rgba(0,0,0,0.5); 
-
+	/* http://www.colorzilla.com/gradient-editor/ */
 	background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,0)), color-stop(100%,rgba(255,255,255,1))); /* Chrome,Safari4+ */
 	background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%); /* Chrome10+,Safari5.1+ */
@@ -273,60 +243,111 @@ button:active {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 ); /* IE6-9 */
 }
 
-input:focus {
+#content input:focus {
 	border: 1px solid #1FD1FF;
 	background-color: white;
 }
 
+/* AJAX Response Fields */
+
+.errmsg,
+.succmsg {
+	font-weight: bold;
+}
+
 .errmsg {
 	color: red;
-	font-weight: bold;
 }
 
 .succmsg {
 	color: #13AEFF;
-	font-weight: bold;
 }
+
+/* AJAX Loader CSS3 Animation */
+
+.ajaxloader {
+	margin-left: auto;
+	margin-right: auto;
+	width: 30px;
+	height: 30px;
+	border: 8px solid #313131;
+	border-right-color: transparent;
+	border-radius: 50%;
+	box-shadow: 0 0 25px 2px #eee;
+	display: none;
+	-moz-animation: spin 1s linear infinite;
+	-webkit-animation: spin 1s linear infinite;
+	animation: spin 1s linear infinite;
+}
+
+@-moz-keyframes spin {
+	from { -moz-transform: rotate(0deg);   opacity: 0.2; }
+	50%  { -moz-transform: rotate(180deg); opacity: 1.0; }
+	to   { -moz-transform: rotate(360deg); opacity: 0.2; }
+}
+
+@-webkit-keyframes spin {
+	from { -webkit-transform: rotate(0deg);   opacity: 0.2; }
+	50%  { -webkit-transform: rotate(180deg); opacity: 1.0; }
+	to   { -webkit-transform: rotate(360deg); opacity: 0.2; }
+}
+
+@keyframes spin {
+	from { transform: rotate(0deg);   opacity: 0.2; }
+	50%  { transform: rotate(180deg); opacity: 1.0; }
+	to   { transform: rotate(360deg); opacity: 0.2; }
+}
+
+/* Homepage Splash Screen */
 
 #splash {
 	display: none;
 	text-align: center;
 }
 
-/*media queries*/
+/* Media queries to modify for desktop */
 
 @media only screen and (min-width: 768px) {
-	input, button, select {
-		width: auto;
-	}
+	/* General body */
 
-	#splash {
-		display: block;
-	}
-
-
-	a.to_nav {
-		display: none;
-	}
-	
 	.wrapper {
 		position: relative;
 		width: 768px;
 		margin: auto;
 	}
-	
-	#primary_nav {
+
+	/* Form fields */
+
+	#content input,
+	#content button,
+	#content select {
+		width: auto;
+	}
+
+	/* Show home splash */
+
+	#splash {
+		display: block;
+	}
+
+	/* Navbar */
+
+	a.to_nav {
+		display: none;
+	}
+
+	#navbar {
 		position: absolute;
 		top: 15px;
 		right: 10px;
 		background: none;
 	}
-	
-	#primary_nav li {
+
+	#navbar li {
 		display: inline;
 	}
-	
-	#primary_nav li a {
+
+	#navbar li a {
 		float: left;
 		border: none;
 		padding: 0 10px;
@@ -334,11 +355,13 @@ input:focus {
 		-moz-border-radius: 2px;
 		border-radius: 2px;
 	}
-	
-	#primary_nav li.top {
+
+	#navbar li.top {
 		display: none;
 	}
 }
+
+/* List table style, based on http://css-tricks.com/responsive-data-tables/ */
 
 thead {
 	background-color: #313131;
@@ -372,75 +395,58 @@ td:nth-of-type(7) { text-align: center; }
 td:nth-of-type(8) { text-align: center; }
 td:nth-of-type(9) { text-align: center; }
 
-/***********************/
-/* 
-	Max width before this PARTICULAR table gets nasty
-	This query will take effect for any screen smaller than 760px
-	and also iPads specifically.
-	*/
-	@media 
-	only screen and (max-width: 768px)  {
-	
-		/* Force table to not be like tables anymore */
-		table, thead, tbody, th, td, tr { 
-			display: block; 
-		}
-		
-		/* Hide table headers (but not display: none;, for accessibility) */
-		thead tr { 
-			position: absolute;
-			top: -9999px;
-			left: -9999px;
-		}
-		
-		tr { border: 1px solid #ccc; }
-		
-		td { 
-			/* Behave  like a "row" */
-			border: none;
-			border-bottom: 1px solid #eee; 
-			position: relative;
-			padding-left: 50%; 
-			padding-right: 6px;
-		}
-
-		tr:target td {
-			display: block;
-		}
-
-		td:nth-of-type(2) { display: none; }
-		td:nth-of-type(3) { display: none; }
-		td:nth-of-type(4) { display: none; }
-		td:nth-of-type(5) { display: none; }
-		td:nth-of-type(6) { display: none; }
-		td:nth-of-type(7) { display: none; }
-		td:nth-of-type(8) { display: none; }
-		td:nth-of-type(9) { display: none; }
-		
-		td:before { 
-			/* Now like a table header */
-			position: absolute;
-			/* Top/left values mimic padding */
-			top: 6px;
-			left: 6px;
-			width: 45%; 
-			padding-right: 10px; 
-			white-space: nowrap;
-		}
-		
-		/*
-		Label the data
-		*/
-		td:nth-of-type(1):before { content: "Title"; }
-		td:nth-of-type(2):before { content: "Description"; }
-		td:nth-of-type(3):before { content: "Type"; }
-		td:nth-of-type(4):before { content: "Created"; }
-		td:nth-of-type(5):before { content: "Last Edited"; }
-		td:nth-of-type(6):before { content: "View"; }
-		td:nth-of-type(7):before { content: "Present"; }
-		td:nth-of-type(8):before { content: "Edit"; }
-		td:nth-of-type(9):before { content: "Delete"; }
+@media
+only screen and (max-width: 768px)  {
+	table, thead, tbody, th, td, tr {
+		display: block;
 	}
-	
-	
+
+	thead tr {
+		display: none;
+	}
+
+	tr { border: 1px solid #ccc; }
+
+	td {
+		border: none;
+		border-bottom: 1px solid #eee;
+		position: relative;
+		padding-left: 50%;
+		padding-right: 6px;
+	}
+
+	tr:target td {
+		display: block;
+	}
+
+	td:nth-of-type(2) { display: none; }
+	td:nth-of-type(3) { display: none; }
+	td:nth-of-type(4) { display: none; }
+	td:nth-of-type(5) { display: none; }
+	td:nth-of-type(6) { display: none; }
+	td:nth-of-type(7) { display: none; }
+	td:nth-of-type(8) { display: none; }
+	td:nth-of-type(9) { display: none; }
+
+	td:before {
+		position: absolute;
+		top: 6px;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+	}
+
+	td:nth-of-type(1):before { content: "Title"; }
+	td:nth-of-type(2):before { content: "Description"; }
+	td:nth-of-type(3):before { content: "Type"; }
+	td:nth-of-type(4):before { content: "Created"; }
+	td:nth-of-type(5):before { content: "Last Edited"; }
+	td:nth-of-type(6):before { content: "View"; }
+	td:nth-of-type(7):before { content: "Present"; }
+	td:nth-of-type(8):before { content: "Edit"; }
+	td:nth-of-type(9):before { content: "Delete"; }
+}
+
+
 
