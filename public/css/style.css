@@ -230,11 +230,22 @@ button, select {
     border-radius: 50%;  
     box-shadow: 0 0 25px 2px #eee;
     display: none;
-    animation: spin 1s linear infinite; 
     -moz-animation: spin 1s linear infinite; 
     -webkit-animation: spin 1s linear infinite; 
-    -o-animation: spin 1s linear infinite; 
+    animation: spin 1s linear infinite; 
 } 
+
+@-moz-keyframes spin {  
+    from { -moz-transform: rotate(0deg);   opacity: 0.2; }  
+    50%  { -moz-transform: rotate(180deg); opacity: 1.0; }  
+    to   { -moz-transform: rotate(360deg); opacity: 0.2; }  
+}
+
+@-webkit-keyframes spin {  
+    from { -webkit-transform: rotate(0deg);   opacity: 0.2; }  
+    50%  { -webkit-transform: rotate(180deg); opacity: 1.0; }  
+    to   { -webkit-transform: rotate(360deg); opacity: 0.2; }  
+}
 
 @keyframes spin {  
     from { transform: rotate(0deg);   opacity: 0.2; }  
