@@ -4,6 +4,7 @@ var http = require('http');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var globals = require('./middleware/globals');
 
 function init(){
     var app = express();
@@ -40,6 +41,8 @@ function configureExpress(app){
         app.use(passport.initialize());
         app.use(passport.session());
 
+        app.use(globals);
+
         app.use(app.router);
         app.use(express.static(path.join(__dirname, 'public')));
 
@@ -58,7 +61,3 @@ function initPassportUser(){
 
     return User;
 }
-
-
-/*****************************************************/
-

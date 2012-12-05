@@ -14,9 +14,21 @@
                     window.location.replace(data.redirect_to);
                 }
 
-                function error(xhr, status, err){
-                    console.log(xhr);
-                    alert(JSON.stringify(err));
+                function error(xhr, status, err) {
+                    switch(err) {
+                        case "Bad Request":
+                            $('.errmsg').text(xhr.responseText);
+                            break;
+                        case "Unauthorized":
+                            $('.errmsg').text("Invalid username/password.");
+                            break;
+                        case "Forbidden":
+                            $('.errmsg').text("Session has expired. Please refresh.");
+                            break;
+                        default:
+                            $('.errmsg').text("An unexpected error has occured.");
+                    }
+
                     $('.ajaxloader').hide();
                     $('#loginButton', this).prop('disabled', false);
                 }
@@ -32,14 +44,15 @@
     <h1>Login</h1>
     <form id="login" action="/login" method="POST">
         <input type="hidden" name="_csrf" value="<%= token %>" />
+        <div class="errmsg"></div>
         <div>
             <div>
                 <label> Username </label>
-                <input id="loginUsername" name="username" type="username"/>
+                <input id="loginUsername" name="username" type="username" required="" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" />
             </div>
             <div>
                 <label> Password </label>
-                <input id="loginPassword" name="password" type="password"/>
+                <input id="loginPassword" name="password" type="password" required=""/>
             </div>
             <div>
                 <button id="loginButton"> Login </button>

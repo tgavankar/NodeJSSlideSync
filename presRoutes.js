@@ -5,13 +5,11 @@ var passport = require('passport');
 var User = require('./models/User');
 var Presentation = require('./models/Presentation');
 var ensureAuthenticated = require('./middleware/ensureAuthenticated');
-var _ = require('underscore');
-var csrf = require('./middleware/csrf');
 var sanitize = require('validator').sanitize;
 
 module.exports = function (app) {
     
-    app.get('/view/:id', csrf, function(req, res) {
+    app.get('/view/:id', function(req, res) {
         Presentation.findOne({shortid: req.params.id}, function(err, doc) {
             if(err) {
                 res.send("error");
@@ -40,7 +38,7 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/praw/:id', ensureAuthenticated, csrf, function(req, res) {
+    app.get('/praw/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
                 res.send("error");
@@ -68,7 +66,7 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/present/:id', ensureAuthenticated, csrf, function(req, res) {
+    app.get('/present/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
                 res.send("error");
@@ -87,14 +85,14 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/list', ensureAuthenticated, csrf, function(req, res) {
+    app.get('/list', ensureAuthenticated, function(req, res) {
         var presentations = Presentation.find({_creator: req.user}, function(err, docs) {
             res.render('list.ejs', {preslist: docs});
         });
         
     });
 
-    app.get('/create', ensureAuthenticated, csrf, function(req, res) {
+    app.get('/create', ensureAuthenticated, function(req, res) {
         res.render('create.ejs', {presType: 'dzslides', title: '', desc: '', html: '', css: '', action: '/create'});
     });
 
@@ -149,7 +147,7 @@ module.exports = function (app) {
         res.send(makePres());
     });
 
-    app.get('/edit/:id', ensureAuthenticated, csrf, function(req, res) {
+    app.get('/edit/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
                 res.send("error");
@@ -209,7 +207,7 @@ module.exports = function (app) {
         });
     });
 
-    app.post('/delete/:id', ensureAuthenticated, csrf, function(req, res) {
+    app.post('/delete/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
                 res.send("error");

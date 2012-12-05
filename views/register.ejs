@@ -11,11 +11,25 @@
                 var password = $('#regPassword').val();
 
                 function success(data){
-                    alert(JSON.stringify(data));
+                    $('.ajaxloader').hide();
+                    $('.succmsg').text(data);
+                    setTimeout(function() {
+                        //window.location.href = "/login";
+                    }, 1000);
                 }
 
                 function error(xhr, status, err){
-                    alert(JSON.stringify(err));
+                    switch(err) {
+                        case "Bad Request":
+                            $('.errmsg').text(xhr.responseText);
+                            break;
+                        case "Forbidden":
+                            $('.errmsg').text("Session has expired. Please refresh.");
+                            break;
+                        default:
+                            $('.errmsg').text("An unexpected error has occured.");
+                    }
+                    
                     $('.ajaxloader').hide();
                     $('#registerButton', this).prop('disabled', false);
                 }
@@ -27,27 +41,29 @@
                     });
                 }
                 else {
-                    alert("Passwords don't match.");
+                    error({'responseText': "Passwords don't match."}, "error", "Bad Request");
                 }
             });
-        }
+        });
     </script>
 
-    <h2>Register</h2>
+    <h1>Register</h1>
     <div>
-        <form id="register">
+        <form id="register" action="/register" method="POST">
             <input type="hidden" name="_csrf" value="<%= token %>" />
+            <div class="succmsg"></div>
+            <div class="errmsg"></div>
             <div>
-                <label> Username </label>
-                <input id="regUsername" name="username" type="username"/>
+                <label> Username (alphanumeric, 2-20 characters, must start with letter) </label>
+                <input id="regUsername" name="username" type="username" required="" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,20}$" />
             </div>
             <div>
-                <label> Password </label>
-                <input id="regPassword" name="password" type="password"/>
+                <label> Password (6 chars min) </label>
+                <input id="regPassword" name="password" type="password" pattern=".{5}.+" />
             </div>
             <div>
                 <label> Confirm Password </label>
-                <input id="regPasswordConf" type="password"/>
+                <input id="regPasswordConf" name="passwordConf" type="password" pattern=".{5}.+"/>
             </div>
             <div>
                 <button id="registerButton"> Register </button>
