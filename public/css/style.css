@@ -141,7 +141,8 @@ a.to_nav:focus {
 }
 
 #primary_nav li a:hover,
-#primary_nav li a:focus {
+#primary_nav li a:focus,
+#primary_nav li a.currpage {
 	color: #1c1c1c;
 	background: #13AEFF;
 }

@@ -11,11 +11,21 @@
       $('.link').on('tapone', function(e) {
         e.preventDefault();
         window.location.href = $(this).data("url");
-      })
+      });
 
       $('.qrcode').on('tapone', function(e) {
         e.preventDefault();
         window.open('http://chart.apis.google.com/chart?cht=qr&chs=300x300&chl='+encodeURIComponent(location.host + $(this).data("url")),'Qr%20code','top=100,left=200,width=350,height=350,status=yes');
+      });
+
+      $('.opentab').on('tapone', function(e) {
+        var id = "#" + $(this).parent().attr('id');
+        if(window.location.hash === id) {
+          window.location.href = "#";
+        }
+        else {
+          window.location.href = id;
+        }
       });
     });
   </script>
@@ -36,7 +46,7 @@
       <tbody>
         <% for(pres in preslist) { %>
           <tr id="<%= preslist[pres].shortid %>">
-            <td><a href="#<%= preslist[pres].shortid %>"><% if(preslist[pres].title) { %><%= strip_tags(preslist[pres].title) %><% } else { %>None<% } %></a></td>
+            <td class="opentab"><% if(preslist[pres].title) { %><%= strip_tags(preslist[pres].title) %><% } else { %>None<% } %></td>
             <td><% if(preslist[pres].desc) { %><%= strip_tags(preslist[pres].desc) %><% } else { %>None<% } %></td>
             <td><%= strip_tags(preslist[pres].type) %></td>
             <td><%= preslist[pres].createdTimestamp %></td>

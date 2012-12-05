@@ -4,11 +4,11 @@
 			<a name="nav"></a>
 			<ul>
 				<% if(!user) {%>
-					<li><a href="/login">Login</a></li>
-					<li><a href="/register">Register</a></li>
+					<li><a href="/login" class="login">Login</a></li>
+					<li><a href="/register" class="reg">Register</a></li>
 				<% } else { %>
-					<li><a href="/list">Presentations</a></li>
-					<li><a href="/create">New</a></li>
+					<li><a href="/list" class="list">Presentations</a></li>
+					<li><a href="/create" class="create">New</a></li>
 					<li><a href="/logout">Log Out</a></li>
 				<% } %>
 				<li class="top"><a class="to_top" href="#home">Top</a></li>
