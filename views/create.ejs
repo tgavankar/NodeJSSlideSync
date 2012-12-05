@@ -10,7 +10,9 @@
                 $('#saveButton', this).prop('disabled', true);
 
                 function success(data){
-                    $('.succmsg').text("Entry saved!");
+                    $('.succmsg').html('Entry saved! <a target="_blank" href="/view/' + data + '">Click here</a> to view.');
+                    $('.ajaxloader').hide();
+                    $('#loginButton', this).prop('disabled', false);
                 }
 
                 function error(xhr, status, err){
@@ -49,10 +51,11 @@
         });
     </script>
 
-    <h2>Save</h2>
+    <h1>Save</h1>
     <div>
         <form id="save" action="<%= action %>" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_csrf" value="<%= token %>" />
+            <div class="succmsg"></div>
             <div class="errmsg"></div>
             <div>
                 <label> Title: </label>
