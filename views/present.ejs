@@ -1,32 +1,14 @@
 <!DOCTYPE html>
+<html>
+<head>
 <meta charset="utf8">
 <title>DZSlides</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<span id="csrf" style="display: none;"><%= token %></span>
 
 <script src="/lib/jquery-1.8.2.min.js"></script>
 <script src="/lib/jgestures.min.js"></script>
-
-<div id="present">
-  <iframe></iframe>
-</div>
-
-<div id="slideidx" onclick="Dz.setCursor(prompt('Go to slide...','1'));">?</div>
-<div id="totalslidecount">?</div>
-
-<div id="notes">
-  <div id="back"><span class="valign">Back</span></div>
-  <div id="content"></div>
-  <div id="next"><span class="valign">Next</span></div>
-</div>
-
-<!--<div id="slidecount">?</div>
-<button id="popup-button" onclick="Dz.popup()">Pop-up</button>-->
-
-<div id="time">
-  <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
-</div>
+<script src="/js/globals.js"></script>
 
 <style>
   html, body {
@@ -39,6 +21,27 @@
     overflow: hidden;
   }
 
+  #backPage {
+    background-color: #AAA;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    opacity: 0.75;
+    filter: alpha(75);
+    color: black;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 12px;
+    font-family: 'Oswald', arial, serif;
+    z-index: 10;
+    text-shadow: 1px 1px 0 #FFF;
+  }
+
+  #backPage:hover {
+    opacity: 1;
+    filter: alpha(1);
+  }
+
   #present {
     bottom: 125px;
     position: absolute;
@@ -49,7 +52,7 @@
     border-right: 4px solid #555;
   }
 
- 
+
   #notes {
     background: #EEE;
     border-top: 8px solid #555;
@@ -91,7 +94,7 @@
   }
 
   #slideidx,
-  #totalslidecount, 
+  #totalslidecount,
   #slidecount {
     background: #888;
     font-size: 40px;
@@ -162,7 +165,7 @@
   #content {
     pointer-events: none;
     z-index: 5;
-    
+
 
   }
 
@@ -204,12 +207,12 @@
     url: null,
     idx: 1
   };
-  
+
   Dz.init = function() {
     this.startClock();
     this.loadIframes();
   }
-  
+
   Dz.onkeydown = function(aEvent) {
     // Don't intercept keyboard shortcuts
     if (aEvent.altKey
@@ -245,7 +248,7 @@
       this.toggleContent();
     }
   }
-  
+
   Dz.onmessage = function(aEvent) {
     var argv = aEvent.data.split(" "), argc = argv.length;
     argv.forEach(function(e, i, a) { a[i] = decodeURIComponent(e) });
@@ -270,14 +273,14 @@
         fjq("#totalslidecount").innerHTML = argv[2];
     }
   }
-  
+
   /* Get url from hash or prompt and store it */
-  
+
   Dz.getUrl = function() {
     var u = "/praw/<%= presId %>";
     return u;
   }
-  
+
   Dz.loadIframes = function() {
     var present = fjq("#present iframe");
     //var future = fjq("#future iframe");
@@ -297,11 +300,11 @@
     if (this.views.remote)
       this.postMsg(this.views.remote, "TOGGLE_CONTENT");
   }
-  
+
   Dz.onhashchange = function() {
     this.loadIframe();
   }
-  
+
   Dz.back = function() {
     this.postMsg(this.views.present, "BACK");
   }
@@ -325,14 +328,14 @@
   Dz.popup = function() {
     this.views.remote = window.open(this.url + "#" + this.idx, 'slides', 'width=800,height=600,personalbar=0,toolbar=0,scrollbars=1,resizable=1');
   }
-  
+
   Dz.postMsg = function(aWin, aMsg) { // [arg0, [arg1...]]
     aMsg = [aMsg];
     for (var i = 2; i < arguments.length; i++)
       aMsg.push(encodeURIComponent(arguments[i]));
     aWin.postMessage(aMsg.join(" "), "*");
   }
-  
+
   Dz.startClock = function() {
     var addZero = function(num) {
       return num < 10 ? '0' + num : num;
@@ -358,10 +361,36 @@
     $('#next').on('tapone', function(e) {
       Dz.forward();
     });
+
+    $("#backPage").on('tapone', function(e) {
+        window.location.href = "/list";
+    });
   }
 
   window.onload = init;
 </script>
 
+</head>
+<body>
+  <span id="csrf" style="display: none;"><%= token %></span>
 
-<script src="/js/globals.js"></script>
+  <div id="backPage">Back to List</div>
+
+  <div id="present">
+    <iframe id="presentFrame"></iframe>
+  </div>
+
+  <div id="slideidx" onclick="Dz.setCursor(prompt('Go to slide...','1'));">?</div>
+  <div id="totalslidecount">?</div>
+
+  <div id="notes">
+    <div id="back"><span class="valign">Back</span></div>
+    <div id="content"></div>
+    <div id="next"><span class="valign">Next</span></div>
+  </div>
+
+  <div id="time">
+    <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+  </div>
+</body>
+</html>

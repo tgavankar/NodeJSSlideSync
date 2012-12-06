@@ -1,9 +1,5 @@
-<!DOCTYPE html>
 <!-- Maybe a font from http://www.google.com/webfonts ? -->
 <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet'>
-<span id="csrf" style="display: none;"><%= token %></span>
-
-
 
 <!-- {{{{ dzslides core
 #
@@ -19,7 +15,6 @@
 #
 -->
 
-<div id="progress-bar"></div>
 
 <!-- Default Style -->
 <style>
@@ -421,7 +416,7 @@
       requestFullscreen.apply(html);
     }
   }
-  
+
   Dz.setProgress = function(aIdx, aStep) {
     var slide = fjq("section:nth-of-type("+ aIdx +")");
     if (!slide)
@@ -431,14 +426,14 @@
         stepSize = slideSize / steps;
     this.progressBar.style.width = ((aIdx - 1) * slideSize + aStep * stepSize) + '%';
   }
-  
+
   Dz.postMsg = function(aWin, aMsg) { // [arg0, [arg1...]]
     aMsg = [aMsg];
     for (var i = 2; i < arguments.length; i++)
       aMsg.push(encodeURIComponent(arguments[i]));
     aWin.postMessage(aMsg.join(" "), "*");
   }
-  
+
   function init() {
     Dz.init();
     window.onkeydown = Dz.onkeydown.bind(Dz);

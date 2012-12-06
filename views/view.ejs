@@ -1,24 +1,54 @@
 <!DOCTYPE html>
-
+<html>
+<head>
 <meta charset="utf-8">
 <title><%= title %></title>
+<link rel="stylesheet" href="/css/reset.css">
 <script src="/lib/jquery-1.8.2.min.js"></script>
 <script src="/lib/jgestures.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<span id="presId" style="display: none;"><%= presId %></span>
-<span id="presType" style="display: none;"><%= presType %></span>
-<span id="csrf" style="display: none;"><%= token %></span>
 
+<% if(presType === "dzslides") { %>
+  <%- include dzslides/view.ejs %>
+  <style>
+    <%- css %>
+  </style>
+<% } else if(presType === "pdf") { %>
+  <style>
+  html, body {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+  }
 
-<div id="follower">Stop Following</div>
+  .valign {
+    position: relative;
+    height: 100%;
+  }
+
+  #pdfCanvas {
+    margin: auto;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  </style>
+  <script src="/lib/pdf/compatibility.js"></script>
+  <script src="/lib/pdf/pdf.js"></script>
+  <%- include pdf/script.ejs %>
+<% } %>
+
+<script src="/js/<%- jsfile %>"></script>
+<script src="/js/globals.js"></script>
 
 <style>
- #follower {
+  #follower, #backPage {
     display: none;
     background-color: #AAA;
     position: absolute;
     top: 15px;
-    right: 15px;
     opacity: 0.75;
     filter: alpha(75);
     color: black;
@@ -30,52 +60,37 @@
     text-shadow: 1px 1px 0 #FFF;
   }
 
-  #follower:hover {
+  #follower {
+    right: 15px;
+  }
+
+  #backPage {
+    left: 15px;
+  }
+
+  #follower:hover, #backPage:hover {
     opacity: 1;
     filter: alpha(1);
   }
 </style>
 
+</head>
+<body>
+<span id="presId" style="display: none;"><%= presId %></span>
+<span id="presType" style="display: none;"><%= presType %></span>
+<span id="csrf" style="display: none;"><%= token %></span>
+
+
+<div id="follower">Stop Following</div>
+<div id="backPage">Back to List</div>
+
 <% if(presType === "dzslides") { %>
-  <style>
-    <%- css %>
-  </style>
   <%- html %>
-  <%- include dzslides/view.ejs %>
+  <div id="progress-bar"></div>
 <% } else if(presType === "pdf") { %>
-  <style>
-    html, body {
-      background-color: black;
-      height: 100%;
-      width: 100%;
-    }
-
-    .valign {
-      position: relative;
-      height: 100%;
-    }
-
-    #pdfCanvas {
-      margin: auto;
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-    }
-  </style>
-  
-  <link rel="stylesheet" href="/css/reset.css">
-
   <div class="valign">
       <canvas id="pdfCanvas"></canvas>
   </div>
-  
-  <script src="/lib/pdf/pdf.js"></script>
-  <script src="/lib/pdf/compatibility.js"></script>
-  <%- include pdf/script.ejs %>
 <% } %>
-
-<script src="/js/<%- jsfile %>"></script>
-
-<script src="/js/globals.js"></script>
+</body>
+</html>

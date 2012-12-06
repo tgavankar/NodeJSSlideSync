@@ -24,6 +24,7 @@ SlideSyncViewer.prototype.init = function() {
     }.bind(this));
 
     $("#follower").show();
+    $('#backPage').show();
 
     $("#follower").on('tapone', function() {
         this.follow = !this.follow;
@@ -34,4 +35,8 @@ SlideSyncViewer.prototype.init = function() {
             $("#follower").text("Start Following");
         }
     }.bind(this));
+
+    $("#backPage").on('tapone', function() {
+        window.location.href = '/list';
+    });
 }

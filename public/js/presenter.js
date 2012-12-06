@@ -17,7 +17,7 @@ SlideSyncPresenter.prototype.init = function() {
 
 SlideSyncPresenter.prototype.initHandlers = function() {
     this.socket.on('connect', this.registerRedis.bind(this));
-    
+
     function decorate(callback, toBind, pres) {
         return function(aWin, aMsg) {
             if(aWin === window && arguments.length > 1 && ["CURSOR", "FORWARD", "BACK", "START", "END"].indexOf(arguments[1]) > -1) {
@@ -48,7 +48,7 @@ SlideSyncPresenter.prototype.registerRedis = function() {
     var error = function(xhr, status, err){
         switch(err) {
             case "Bad Request":
-                alert(xhr.responseText); 
+                alert(xhr.responseText);
                 break;
             case "Unauthorized":
                 window.location.href = "/login";

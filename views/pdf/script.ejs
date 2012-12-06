@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <script>
 var PdfJs = {};
 
@@ -16,7 +15,7 @@ PdfJs.init = function() {
 	PDFJS.getDocument(this.url).then(function getPdf(_pdfDoc) {
 		this.pdfDoc = _pdfDoc;
 		this.renderPage(this.idx);
-		for(win in this.remWindsQueue) 
+		for(win in this.remWindsQueue)
 			this.postMsg(this.remWindsQueue[win], "REGISTERED", document.title, this.pdfDoc.numPages);
 	}.bind(this));
 	this.setupTouchEvents();
@@ -116,7 +115,7 @@ PdfJs.onHashChange = function() {
 		this.idx = newPage;
 		this.renderPage(this.idx);
 	}
-	
+
 	for (var i = 0; i < this.remoteWindows.length; i++) {
 		this.postMsg(this.remoteWindows[i], "CURSOR", this.idx);
 	}
