@@ -1,49 +1,49 @@
-<!DOCTYPE html> 
-<html> 
-  <head> 
-    <meta charset="utf-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1"> 
-    <base href="http://popatvm.res.cmu.edu:8888"></base> 
-    <title>SlideSync</title> 
-    <link rel='stylesheet' href='/css/reset.css' /> 
-    <link rel='stylesheet' href='/css/style.css' /> 
-    <script src="/js/globals.js"></script> 
-    <script src="/lib/jquery-1.8.2.min.js"></script> 
-    <script src="/lib/jquery.form.js"></script> 
-    <script src="/lib/jgestures.min.js"></script> 
-    <script> 
-      $(document).ready(function() { 
-        switch(window.location.pathname) { 
-          case "/login": 
-            $("#navbar a.login").addClass("currpage"); 
-            break; 
-          case "/register": 
-            $("#navbar a.reg").addClass("currpage"); 
-            break; 
-          case "/list": 
-            $("#navbar a.list").addClass("currpage"); 
-            break; 
-          case "/create": 
-            $("#navbar a.create").addClass("currpage"); 
-            break; 
-        } 
-      }); 
-    </script> 
-  </head> 
-  <body> 
-  	<div class="wrapper"> 
-  		<header> 
-  			<h1 class="logo"> 
-	  			<a href="/" name="home"> 
-		    	<span id="logo1">Slide</span> 
-		    	<span id="logo2">Sync</span> 
-		    	</a> 
-	    	</h1> 
-			<a class="to_nav" href="#nav">Menu</a> 
-		</header> 
-		<div id="content"> 
- 
-	
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="http://popatvm.res.cmu.edu:8888"></base>
+    <title>SlideSync</title>
+    <link rel='stylesheet' href='/css/reset.css' />
+    <link rel='stylesheet' href='/css/style.css' />
+    <script src="/js/globals.js"></script>
+    <script src="/lib/jquery-1.8.2.min.js"></script>
+    <script src="/lib/jquery.form.js"></script>
+    <script src="/lib/jgestures.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        switch(window.location.pathname) {
+          case "/login":
+            $("#navbar a.login").addClass("currpage");
+            break;
+          case "/register":
+            $("#navbar a.reg").addClass("currpage");
+            break;
+          case "/list":
+            $("#navbar a.list").addClass("currpage");
+            break;
+          case "/create":
+            $("#navbar a.create").addClass("currpage");
+            break;
+        }
+      });
+    </script>
+  </head>
+  <body>
+  	<div class="wrapper">
+  		<header>
+  			<h1 class="logo">
+	  			<a href="/" name="home">
+		    	<span id="logo1">Slide</span>
+		    	<span id="logo2">Sync</span>
+		    	</a>
+	    	</h1>
+			<a class="to_nav" href="#nav">Menu</a>
+		</header>
+		<div id="content">
+
+
 <h1>Introducing, SlideSync!</h1>
 
 <div id="splash">
@@ -60,23 +60,23 @@
 <h2>Well, what're you waiting for? <a href="/login">Login</a> or <a href="/register">Register</a> now!</h2>
 
 
-		</div> 
- 
-		<nav id="navbar"> 
-			<a name="nav"></a> 
-			<ul> 
-				 
-					<li><a href="/login" class="login">Login</a></li> 
-					<li><a href="/register" class="reg">Register</a></li> 
-				 
-				<li class="top"><a class="to_top" href="#home">Top</a></li> 
-			</ul> 
-		</nav> 
- 
-		<footer> 
-			Copyright &copy; 2012 Tanay Gavankar 
-		</footer> 
-	</div> 
-  </body> 
+		</div>
+
+		<nav id="navbar">
+			<a name="nav"></a>
+			<ul>
+
+					<li><a href="/login" class="login">Login</a></li>
+					<li><a href="/register" class="reg">Register</a></li>
+
+				<li class="top"><a class="to_top" href="#home">Top</a></li>
+			</ul>
+		</nav>
+
+		<footer>
+			Copyright &copy; 2012 Tanay Gavankar
+		</footer>
+	</div>
+  </body>
 </html>
 
