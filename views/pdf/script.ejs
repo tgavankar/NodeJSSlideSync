@@ -12,9 +12,11 @@ PdfJs.init = function() {
 
 	this.ctx = this.canvas.getContext('2d');
 	PDFJS.workerSrc = '/lib/pdf/pdf.js'
+	// Grab PDF async and load.
 	PDFJS.getDocument(this.url).then(function getPdf(_pdfDoc) {
 		this.pdfDoc = _pdfDoc;
 		this.renderPage(this.idx);
+		// Reply with REGISTERED only after PDF has been fully loaded.
 		for(win in this.remWindsQueue)
 			this.postMsg(this.remWindsQueue[win], "REGISTERED", document.title, this.pdfDoc.numPages);
 	}.bind(this));
@@ -27,7 +29,6 @@ PdfJs.init = function() {
 
 PdfJs.renderPage = function(num) {
 	// Using promise to fetch the page
-
 	this.pdfDoc.getPage(num).then(function(page) {
 		var origViewport = page.getViewport(1);
 
@@ -48,16 +49,10 @@ PdfJs.renderPage = function(num) {
 	}.bind(this));
 }
 
-//
-// Go to previous page
-//
 PdfJs.back = function() {
 	this.setPage(this.idx-1);
 }
 
-//
-// Go to next page
-//
 PdfJs.forward = function() {
 	if (this.idx >= this.pdfDoc.numPages)
 		return;
@@ -88,6 +83,7 @@ PdfJs.onMessage = function(aEvent) {
 		this.postMsg(win, "CURSOR", this.idx);
 }
 
+// Use HTML5 History API, or fall back to a more compatible API.
 PdfJs.updateHash = function(str) {
 	if(window.history.replaceState) {
 		window.history.replaceState({}, "", "#" + str);
@@ -105,6 +101,7 @@ PdfJs.postMsg = function(aWin, aMsg) {
 	aWin.postMessage(aMsg.join(" "), "*");
 }
 
+// Handler for when the hash changes, to avoid page refresh.
 PdfJs.onHashChange = function() {
 	var cursor = window.location.hash.split("#")[1];
 	var newPage = 1;
@@ -121,10 +118,12 @@ PdfJs.onHashChange = function() {
 	}
 }
 
+// Rescale PDF on resize.
 PdfJs.onResize = function(aEvent) {
 	this.renderPage(this.idx);
 }
 
+// Allow for touch events for navigation.
 PdfJs.setupTouchEvents = function() {
 	var orgX, newX;
 	var tracking = false;
@@ -154,6 +153,7 @@ PdfJs.setupTouchEvents = function() {
 	}
 }
 
+// Allow for keyboard events for navigation.
 PdfJs.onKeyDown = function(aEvent) {
 	// Don't intercept keyboard shortcuts
 	if (aEvent.altKey

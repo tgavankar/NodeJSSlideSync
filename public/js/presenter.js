@@ -18,6 +18,8 @@ SlideSyncPresenter.prototype.init = function() {
 SlideSyncPresenter.prototype.initHandlers = function() {
     this.socket.on('connect', this.registerRedis.bind(this));
 
+    // Decorator function that forwards the wrapped postMsg call
+    // to the server.
     function decorate(callback, toBind, pres) {
         return function(aWin, aMsg) {
             if(aWin === window && arguments.length > 1 && ["CURSOR", "FORWARD", "BACK", "START", "END"].indexOf(arguments[1]) > -1) {
@@ -31,6 +33,8 @@ SlideSyncPresenter.prototype.initHandlers = function() {
         }
     }
 
+    // Use the decorator pattern to wrap the postMsg function so that
+    // it also forwards the message to the server.
     if($("#presType").text() === "dzslides") {
         Dz.postMsg = decorate(Dz.postMsg, Dz, this);
     }
@@ -40,6 +44,11 @@ SlideSyncPresenter.prototype.initHandlers = function() {
     }
 }
 
+/**
+ * Register this presenter with Redis to get a security key.
+ * All future messages must be signed with the key, otherwise
+ * they will not be forwarded to viewers.
+ */
 SlideSyncPresenter.prototype.registerRedis = function() {
     var success = function(data) {
         this.key = data.key;

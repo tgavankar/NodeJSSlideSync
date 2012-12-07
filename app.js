@@ -41,6 +41,7 @@ function configureExpress(app){
         app.use(passport.initialize());
         app.use(passport.session());
 
+        // Register middleware for global template vars.
         app.use(globals);
 
         app.use(app.router);

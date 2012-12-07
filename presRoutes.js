@@ -8,7 +8,8 @@ var ensureAuthenticated = require('./middleware/ensureAuthenticated');
 var sanitize = require('validator').sanitize;
 
 module.exports = function (app) {
-    
+
+    // Serve viewers
     app.get('/view/:id', function(req, res) {
         Presentation.findOne({shortid: req.params.id}, function(err, doc) {
             if(err) {
@@ -19,25 +20,26 @@ module.exports = function (app) {
             }
             else {
                 if(doc.type === "dzslides") {
-                    res.render('view.ejs', {user: req.user, 
-                                            title: doc.title, 
-                                            presId: doc.shortid, 
-                                            html: doc.content.html, 
-                                            css: doc.content.css, 
-                                            presType: doc.type, 
+                    res.render('view.ejs', {user: req.user,
+                                            title: doc.title,
+                                            presId: doc.shortid,
+                                            html: doc.content.html,
+                                            css: doc.content.css,
+                                            presType: doc.type,
                                             jsfile: 'viewer.js'});
                 }
                 else if(doc.type === "pdf") {
-                    res.render('view.ejs', {user: req.user, 
-                                            title: doc.title, 
-                                            presId: doc.shortid, 
-                                            presType: doc.type, 
+                    res.render('view.ejs', {user: req.user,
+                                            title: doc.title,
+                                            presId: doc.shortid,
+                                            presType: doc.type,
                                             jsfile: 'viewer.js'});
                 }
             }
         });
     });
 
+    // Serve the iframe content for presenter
     app.get('/praw/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
@@ -48,24 +50,25 @@ module.exports = function (app) {
             }
             else {
                 if(doc.type === "dzslides") {
-                    res.render('view.ejs', {title: doc.title, 
-                                            presId: doc.shortid, 
-                                            html: doc.content.html, 
-                                            css: doc.content.css, 
-                                            presType: doc.type, 
-                                            jsfile: 'presenter.js'});    
-                }
-                else if(doc.type === "pdf") {
-                    res.render('view.ejs', {title: doc.title, 
-                                            presId: doc.shortid, 
-                                            presType: doc.type, 
+                    res.render('view.ejs', {title: doc.title,
+                                            presId: doc.shortid,
+                                            html: doc.content.html,
+                                            css: doc.content.css,
+                                            presType: doc.type,
                                             jsfile: 'presenter.js'});
                 }
-                
+                else if(doc.type === "pdf") {
+                    res.render('view.ejs', {title: doc.title,
+                                            presId: doc.shortid,
+                                            presType: doc.type,
+                                            jsfile: 'presenter.js'});
+                }
+
             }
         });
     });
 
+    // Serve presenter window
     app.get('/present/:id', ensureAuthenticated, function(req, res) {
         Presentation.findOne({shortid: req.params.id, _creator: req.user}, function(err, doc) {
             if(err) {
@@ -96,6 +99,10 @@ module.exports = function (app) {
     });
 
     app.post('/create', ensureAuthenticated, function(req, res) {
+        // Generate a shortID for the presentation, but we have to make sure it's unique
+        // so make this recursive until we find a unique one. Not the best way of implementing
+        // it because theoretically it could infinitely recurse, but statistically that won't
+        // happen.
         function makePres() {
             var shortid = Math.random().toString(36).substring(2, 7); // Random 5 chars
 
@@ -119,6 +126,7 @@ module.exports = function (app) {
                     pres.content = {html: sanitize(req.body.html).xss(), css: sanitize(req.body.css).xss()};
                 }
                 else if(req.body.type === "pdf") {
+                    // Upload file
                     var destPath = path.join(__dirname, 'public', 'upload', shortid + '.pdf');
                     var is = fs.createReadStream(req.files.pdfFile.path);
                     var os = fs.createWriteStream(destPath);
