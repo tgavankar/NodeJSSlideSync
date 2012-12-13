@@ -1,4 +1,4 @@
-<%- include parts/top.ejs %> 
+<%- include parts/top.ejs %>
     <script>
         $(document).ready(function() {
             $('#pdfslides').hide();
@@ -12,7 +12,7 @@
                 function success(data){
                     $('.succmsg').html('Entry saved! <a target="_blank" href="/view/' + data + '">Click here</a> to view.');
                     $('.ajaxloader').hide();
-                    $('#loginButton', this).prop('disabled', false);
+                    $('#saveButton', this).prop('disabled', false);
                 }
 
                 function error(xhr, status, err){
@@ -31,7 +31,7 @@
                     }
 
                     $('.ajaxloader').hide();
-                    $('#loginButton', this).prop('disabled', false);
+                    $('#saveButton', this).prop('disabled', false);
                 }
 
                 $(this).ajaxSubmit( {
@@ -92,4 +92,4 @@
             </div>
         </form>
     </div>
-<%- include parts/bottom.ejs %> 
+<%- include parts/bottom.ejs %>

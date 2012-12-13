@@ -107,8 +107,17 @@ module.exports = function (app) {
             var shortid = Math.random().toString(36).substring(2, 7); // Random 5 chars
 
             Presentation.findOne({shortid : shortid }, function(err, exists) {
+                function handleOutput(output) {
+                    if(output.success) {
+                        res.send(output.text);
+                    }
+                    else {
+                        res.status(400).send(output.text);
+                    }
+                }
+
                 if (err) {
-                    return {success: false, text: err};
+                    return handleOutput({success: false, text: err});
                 }
                 if (exists) {
                     return makePres();
@@ -138,26 +147,19 @@ module.exports = function (app) {
                     pres.content = {path: shortid + '.pdf'};
                 }
                 else {
-                    return {success: false, text: 'Invalid type'};
+                    return handleOutput({success: false, text: 'Invalid type'});
                 }
 
                 pres.save(function(err) {
                     if(err) {
-                        return { success: false, err: err };
+                        return handleOutput({ success: false, err: err });
                     }
-                    return { success: true, text: shortid };
+                    return handleOutput({ success: true, text: shortid });
                 });
             });
         }
 
-        var output = makePres();
-
-        if(output.success) {
-            res.send(output.text);
-        }
-        else {
-            res.status(400).send(output.text);
-        }
+        makePres();
     });
 
     app.get('/edit/:id', ensureAuthenticated, function(req, res) {
